@@ -9,7 +9,15 @@ export interface Question {
   difficulty: Difficulty
 }
 
+export interface Student {
+  id: string
+  name: string
+  class: string
+  pin: string
+}
+
 export interface PlayerRecord {
+  studentId?: string
   nickname: string
   score: number
   correct: number
@@ -19,4 +27,4 @@ export interface PlayerRecord {
   _id?: number  // 고유 식별자 (timestamp), 중복 순위 탐색 방지용
 }
 
-export type Screen = 'start' | 'quiz' | 'result'
+export type Screen = 'start' | 'quiz' | 'result' | 'teacher'

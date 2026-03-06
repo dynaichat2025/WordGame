@@ -4,6 +4,7 @@ import { getQuestions } from './data/questions'
 import StartScreen from './components/StartScreen'
 import QuizScreen from './components/QuizScreen'
 import ResultScreen from './components/ResultScreen'
+import TeacherScreen from './components/TeacherScreen'
 
 export interface AnswerRecord {
   question: Question
@@ -14,6 +15,7 @@ export interface AnswerRecord {
 interface GameState {
   screen: Screen
   nickname: string
+  studentId?: string
   difficulty: Difficulty
   questions: Question[]
   score: number
@@ -24,6 +26,7 @@ interface GameState {
 const initialState: GameState = {
   screen: 'start',
   nickname: '',
+  studentId: undefined,
   difficulty: 'normal',
   questions: [],
   score: 0,
@@ -34,10 +37,11 @@ const initialState: GameState = {
 export default function App() {
   const [state, setState] = useState<GameState>(initialState)
 
-  const handleStart = (nickname: string, difficulty: Difficulty) => {
+  const handleStart = (nickname: string, difficulty: Difficulty, studentId?: string) => {
     setState({
       screen: 'quiz',
       nickname,
+      studentId,
       difficulty,
       questions: getQuestions(difficulty, 10),
       score: 0,
@@ -63,7 +67,9 @@ export default function App() {
 
   const handleHome = () => setState(initialState)
 
-  if (state.screen === 'start') return <StartScreen onStart={handleStart} />
+  if (state.screen === 'teacher') return <TeacherScreen onClose={handleHome} />
+
+  if (state.screen === 'start') return <StartScreen onStart={handleStart} onTeacher={() => setState(s => ({ ...s, screen: 'teacher' }))} />
 
   if (state.screen === 'quiz') {
     return (
@@ -78,6 +84,7 @@ export default function App() {
   return (
     <ResultScreen
       nickname={state.nickname}
+      studentId={state.studentId}
       score={state.score}
       correct={state.correct}
       total={state.questions.length}

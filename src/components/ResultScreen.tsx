@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import type { Difficulty, PlayerRecord } from '../types'
 import type { AnswerRecord } from '../App'
+import { saveGameRecord, loadLeaderboard } from '../data/students'
 
 interface Props {
   nickname: string
+  studentId?: string
   score: number
   correct: number
   total: number
@@ -26,24 +28,6 @@ const GRADE_INFO = {
   C: { color: 'text-gray-400',   bg: 'bg-gray-50',   message: '다시 도전! 💪' },
 }
 
-function loadRecords(): PlayerRecord[] {
-  try {
-    return JSON.parse(localStorage.getItem('wordgame_records') || '[]')
-  } catch {
-    return []
-  }
-}
-
-function saveRecord(record: PlayerRecord): { records: PlayerRecord[]; rank: number } {
-  const records = loadRecords()
-  const withId = { ...record, _id: record._id ?? Date.now() }
-  records.push(withId)
-  records.sort((a, b) => b.score - a.score)
-  const top10 = records.slice(0, 10)
-  localStorage.setItem('wordgame_records', JSON.stringify(top10))
-  const rank = top10.findIndex(r => r._id === withId._id)
-  return { records: top10, rank }
-}
 
 type Tab = 'result' | 'wrong' | 'correct'
 
@@ -88,7 +72,7 @@ function NoteCard({ item }: { item: AnswerRecord }) {
   )
 }
 
-export default function ResultScreen({ nickname, score, correct, total, difficulty, answers, onRetry, onHome }: Props) {
+export default function ResultScreen({ nickname, studentId, score, correct, total, difficulty, answers, onRetry, onHome }: Props) {
   const [records, setRecords] = useState<PlayerRecord[]>([])
   const [myRank, setMyRank] = useState(-1)
   const [displayScore, setDisplayScore] = useState(0)
@@ -120,12 +104,17 @@ export default function ResultScreen({ nickname, score, correct, total, difficul
     if (savedRef.current) return
     savedRef.current = true
     const record: PlayerRecord = {
+      studentId,
       nickname, score, correct, total, difficulty,
       date: new Date().toLocaleDateString('ko-KR'),
     }
-    const { records: saved, rank } = saveRecord(record)
-    setRecords(saved)
-    setMyRank(rank)
+    saveGameRecord(record).then(insertedId => {
+      return loadLeaderboard().then(top10 => {
+        setRecords(top10)
+        const rank = insertedId !== null ? top10.findIndex(r => r._id === insertedId) : -1
+        setMyRank(rank)
+      })
+    })
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
