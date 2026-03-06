@@ -1,12 +1,12 @@
 # Quiz Data Generator Memory
 
 ## Current State of questions.ts
-- Total questions: 320 (20 original + 300 added)
-- Last id used: 320
+- Total questions: 920 (20 original + 900 added)
+- Last id used: 920
 - Per-difficulty counts:
-  - easy: 108 (original 8 + added 100, ids 1-8 and 21-120)
-  - normal: 108 (original 8 + added 100, ids 9-16 and 121-220)
-  - hard: 104 (original 4 + added 100, ids 17-20 and 221-320)
+  - easy: 308 (original 8 + added 300, ids 1-8, 21-120, 321-520)
+  - normal: 308 (original 8 + added 300, ids 9-16, 121-220, 521-720)
+  - hard: 304 (original 4 + added 300, ids 17-20, 221-320, 721-920)
 
 ## File Structure
 - Path: /Volumes/AppDrive/WIP/Claude Code/WordGame/src/data/questions.ts
@@ -15,9 +15,10 @@
 - Helper functions after array: DIFFICULTY_MAP, shuffle, getQuestions
 
 ## Edit Strategy
-- Use Edit tool targeting `// hard (5학년)` comment block to insert before existing hard questions
-- New question blocks are inserted in order: easy additions, then normal additions, then hard additions
-- All new additions placed before the original id 17-20 hard questions
+- For large batches (600+): write temp part files, then use Python to insert before closing `]`
+- Python insertion pattern: find `"    difficulty: 'hard',\n  },\n]"` at file end and replace
+- For small additions: use Edit tool directly
+- New question blocks appended just before the `]` that closes the questions array
 
 ## Words Already Used (do not reuse)
 See words-used.md for full list.
