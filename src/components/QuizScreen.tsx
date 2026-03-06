@@ -8,9 +8,9 @@ interface Props {
 }
 
 const TIME_LIMIT: Record<Difficulty, number> = {
-  easy: 20,
-  normal: 15,
-  hard: 10,
+  easy: 60,
+  normal: 60,
+  hard: 60,
 }
 
 const LABELS = ['①', '②', '③', '④']
