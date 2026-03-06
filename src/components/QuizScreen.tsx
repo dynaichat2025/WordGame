@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback, useRef, memo } from 'react'
 import type { Question, Difficulty } from '../types'
 
 interface Props {
@@ -15,7 +15,14 @@ const TIME_LIMIT: Record<Difficulty, number> = {
 
 const LABELS = ['①', '②', '③', '④']
 
-function HighlightedSentence({ sentence, word }: { sentence: string; word: string }) {
+// React.memo로 타이머 리렌더링 시 불필요한 재렌더 방지
+const HighlightedSentence = memo(function HighlightedSentence({
+  sentence,
+  word,
+}: {
+  sentence: string
+  word: string
+}) {
   const parts = sentence.split(word)
   return (
     <p className="text-xl leading-relaxed text-gray-800 text-center">
@@ -29,11 +36,14 @@ function HighlightedSentence({ sentence, word }: { sentence: string; word: strin
       ))}
     </p>
   )
-}
+})
+
+// -1 매직 넘버 대신 명확한 유니온 타입
+type SelectedState = number | 'timeout' | null
 
 export default function QuizScreen({ questions, difficulty, onFinish }: Props) {
   const [index, setIndex] = useState(0)
-  const [selected, setSelected] = useState<number | null>(null)
+  const [selected, setSelected] = useState<SelectedState>(null)
   const [score, setScore] = useState(0)
   const [correct, setCorrect] = useState(0)
   const [combo, setCombo] = useState(0)
@@ -46,38 +56,77 @@ export default function QuizScreen({ questions, difficulty, onFinish }: Props) {
   const total = questions.length
   const timeLimit = TIME_LIMIT[difficulty]
 
+  // 최신 score/correct를 goNext에서 읽기 위한 ref (stale closure 방지)
   const scoreRef = useRef(score)
   const correctRef = useRef(correct)
   scoreRef.current = score
   correctRef.current = correct
 
+  // goNext 중복 호출 방지용 ref
+  const nextTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const isTransitioningRef = useRef(false)
+
   const goNext = useCallback(() => {
+    if (isTransitioningRef.current) return
+    isTransitioningRef.current = true
+
     setSelected(null)
     setCorrectIdx(null)
     setScorePopup(null)
     setTimeLeft(timeLimit)
     setAnimKey(k => k + 1)
+
     if (index + 1 >= total) {
       onFinish(scoreRef.current, correctRef.current)
     } else {
       setIndex(i => i + 1)
+      isTransitioningRef.current = false
     }
   }, [index, total, onFinish, timeLimit])
+
+  // handleSelect를 useCallback으로 감싸 키보드 핸들러 stale closure 방지
+  const handleSelect = useCallback(
+    (idx: number) => {
+      if (selected !== null) return
+
+      setSelected(idx)
+
+      if (idx === current.answer) {
+        const newCombo = combo + 1
+        setCombo(newCombo)
+        setCorrectIdx(idx)
+        const speedBonus = Math.floor(timeLeft * 0.5)
+        const comboBonus = newCombo >= 3 ? (newCombo - 2) * 2 : 0
+        const gained = 10 + speedBonus + comboBonus
+        setScore(s => s + gained)
+        setCorrect(c => c + 1)
+        setScorePopup(gained)
+      } else {
+        setCombo(0)
+      }
+
+      // 기존 타이머 취소 후 단일 타이머 등록
+      if (nextTimerRef.current) clearTimeout(nextTimerRef.current)
+      nextTimerRef.current = setTimeout(goNext, 1500)
+    },
+    [selected, current, combo, timeLeft, goNext],
+  )
 
   // 타이머
   useEffect(() => {
     if (selected !== null) return
     if (timeLeft <= 0) {
-      setSelected(-1)
+      setSelected('timeout')
       setCombo(0)
-      setTimeout(goNext, 1500)
+      if (nextTimerRef.current) clearTimeout(nextTimerRef.current)
+      nextTimerRef.current = setTimeout(goNext, 1500)
       return
     }
     const t = setTimeout(() => setTimeLeft(n => n - 1), 1000)
     return () => clearTimeout(t)
   }, [timeLeft, selected, goNext])
 
-  // 키보드 단축키 (1~4)
+  // 키보드 단축키 (1~4) — handleSelect가 useCallback이므로 의존성 정확히 반영
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (['1', '2', '3', '4'].includes(e.key)) {
@@ -86,29 +135,14 @@ export default function QuizScreen({ questions, difficulty, onFinish }: Props) {
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  }, [selected, index])
+  }, [handleSelect])
 
-  const handleSelect = (idx: number) => {
-    if (selected !== null) return
-    setSelected(idx)
-
-    if (idx === current.answer) {
-      const newCombo = combo + 1
-      setCombo(newCombo)
-      setCorrectIdx(idx)
-
-      const speedBonus = Math.floor(timeLeft * 0.5)
-      const comboBonus = newCombo >= 3 ? (newCombo - 2) * 2 : 0
-      const gained = 10 + speedBonus + comboBonus
-      setScore(s => s + gained)
-      setCorrect(c => c + 1)
-      setScorePopup(gained)
-    } else {
-      setCombo(0)
+  // 컴포넌트 언마운트 시 pending 타이머 정리
+  useEffect(() => {
+    return () => {
+      if (nextTimerRef.current) clearTimeout(nextTimerRef.current)
     }
-
-    setTimeout(goNext, 1500)
-  }
+  }, [])
 
   const timerPct = (timeLeft / timeLimit) * 100
   const timerColor = timerPct > 50 ? 'bg-green-400' : timerPct > 25 ? 'bg-yellow-400' : 'bg-red-500'
@@ -123,6 +157,8 @@ export default function QuizScreen({ questions, difficulty, onFinish }: Props) {
     return base + 'bg-gray-50 border-gray-200 text-gray-400'
   }
 
+  const isCorrect = typeof selected === 'number' && selected === current.answer
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-sky-400 to-blue-600 flex items-center justify-center p-4">
       <div className="bg-white rounded-3xl shadow-2xl p-6 w-full max-w-lg">
@@ -131,7 +167,6 @@ export default function QuizScreen({ questions, difficulty, onFinish }: Props) {
         <div className="flex justify-between items-center mb-3">
           <span className="text-gray-400 font-medium text-base">{index + 1} / {total}</span>
 
-          {/* 콤보 */}
           <div className="flex items-center gap-2">
             {combo >= 3 && (
               <span key={combo} className="combo-pop bg-orange-100 text-orange-600 font-black text-sm px-2 py-0.5 rounded-full">
@@ -140,7 +175,6 @@ export default function QuizScreen({ questions, difficulty, onFinish }: Props) {
             )}
           </div>
 
-          {/* 점수 (팝업 포함) */}
           <div className="relative">
             <span className="text-blue-700 font-bold text-lg">🏆 {score}점</span>
             {scorePopup !== null && (
@@ -168,7 +202,7 @@ export default function QuizScreen({ questions, difficulty, onFinish }: Props) {
           </span>
         </div>
 
-        {/* 문장 + 질문 (슬라이드 인 애니메이션) */}
+        {/* 문장 + 질문 */}
         <div key={animKey} className="slide-in">
           <div className="bg-blue-50 rounded-2xl px-5 py-6 mb-4 min-h-[90px] flex items-center justify-center">
             <HighlightedSentence sentence={current.sentence} word={current.word} />
@@ -184,12 +218,10 @@ export default function QuizScreen({ questions, difficulty, onFinish }: Props) {
         {/* 피드백 */}
         <div className="min-h-[28px] text-center mb-3">
           {selected !== null && (
-            <span className={`font-bold text-base ${
-              selected === current.answer ? 'text-green-600' : 'text-red-600'
-            }`}>
-              {selected === current.answer
-                ? `정답! 🎉${combo >= 3 ? ` (콤보 보너스!)` : ''}`
-                : selected === -1
+            <span className={`font-bold text-base ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>
+              {isCorrect
+                ? `정답! 🎉${combo >= 3 ? ' (콤보 보너스!)' : ''}`
+                : selected === 'timeout'
                 ? `시간 초과! ⏰  정답: ${current.options[current.answer]}`
                 : `오답! 😢  정답: ${current.options[current.answer]}`}
             </span>

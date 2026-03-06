@@ -172,9 +172,20 @@ const DIFFICULTY_MAP: Record<Difficulty, Difficulty[]> = {
   hard: ['easy', 'normal', 'hard'],
 }
 
+// Fisher-Yates 셔플 (균일한 무작위성 보장)
+function shuffle<T>(arr: T[]): T[] {
+  const result = [...arr]
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[result[i], result[j]] = [result[j], result[i]]
+  }
+  return result
+}
+
 export function getQuestions(difficulty: Difficulty, count = 10): Question[] {
   const levels = DIFFICULTY_MAP[difficulty]
   const filtered = questions.filter(q => levels.includes(q.difficulty))
-  const shuffled = [...filtered].sort(() => Math.random() - 0.5)
-  return shuffled.slice(0, count)
+  const shuffled = shuffle(filtered)
+  // 문항이 count보다 적을 경우 있는 만큼만 반환
+  return shuffled.slice(0, Math.min(count, shuffled.length))
 }

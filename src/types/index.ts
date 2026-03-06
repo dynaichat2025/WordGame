@@ -16,6 +16,7 @@ export interface PlayerRecord {
   total: number
   difficulty: Difficulty
   date: string
+  _id?: number  // 고유 식별자 (timestamp), 중복 순위 탐색 방지용
 }
 
 export type Screen = 'start' | 'quiz' | 'result'
