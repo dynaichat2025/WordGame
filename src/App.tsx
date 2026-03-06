@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { Difficulty, Question, Screen } from './types'
 import { getQuestions } from './data/questions'
+import { getQuestionsForStudent, updateMastery } from './data/students'
 import StartScreen from './components/StartScreen'
 import QuizScreen from './components/QuizScreen'
 import ResultScreen from './components/ResultScreen'
@@ -36,14 +37,20 @@ const initialState: GameState = {
 
 export default function App() {
   const [state, setState] = useState<GameState>(initialState)
+  const [loading, setLoading] = useState(false)
 
-  const handleStart = (nickname: string, difficulty: Difficulty, studentId?: string) => {
+  const handleStart = async (nickname: string, difficulty: Difficulty, studentId?: string) => {
+    setLoading(true)
+    const questions = studentId
+      ? await getQuestionsForStudent(difficulty, studentId)
+      : getQuestions(difficulty, 10)
+    setLoading(false)
     setState({
       screen: 'quiz',
       nickname,
       studentId,
       difficulty,
-      questions: getQuestions(difficulty, 10),
+      questions,
       score: 0,
       correct: 0,
       answers: [],
@@ -51,14 +58,25 @@ export default function App() {
   }
 
   const handleFinish = (score: number, correct: number, answers: AnswerRecord[]) => {
+    if (state.studentId) {
+      updateMastery(state.studentId, state.difficulty, answers.map(a => ({
+        questionId: a.question.id,
+        isCorrect: a.isCorrect,
+      })))
+    }
     setState(s => ({ ...s, screen: 'result', score, correct, answers }))
   }
 
-  const handleRetry = () => {
+  const handleRetry = async () => {
+    setLoading(true)
+    const questions = state.studentId
+      ? await getQuestionsForStudent(state.difficulty, state.studentId)
+      : getQuestions(state.difficulty, 10)
+    setLoading(false)
     setState(s => ({
       ...s,
       screen: 'quiz',
-      questions: getQuestions(s.difficulty, 10),
+      questions,
       score: 0,
       correct: 0,
       answers: [],
@@ -66,6 +84,12 @@ export default function App() {
   }
 
   const handleHome = () => setState(initialState)
+
+  if (loading) return (
+    <div className="min-h-screen bg-gradient-to-b from-sky-400 to-blue-600 flex items-center justify-center">
+      <div className="text-white text-xl font-bold">문제 준비 중...</div>
+    </div>
+  )
 
   if (state.screen === 'teacher') return <TeacherScreen onClose={handleHome} />
 

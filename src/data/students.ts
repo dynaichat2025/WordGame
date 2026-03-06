@@ -1,5 +1,6 @@
 import { supabase } from '../lib/supabase'
-import type { Student, PlayerRecord } from '../types'
+import type { Student, PlayerRecord, Difficulty } from '../types'
+import { getPoolForDifficulty, shuffle } from './questions'
 
 export async function loadStudents(): Promise<Student[]> {
   const { data } = await supabase.from('students').select('*').order('name')
@@ -64,6 +65,51 @@ export async function loadAllRecords(): Promise<PlayerRecord[]> {
     date: r.date,
     _id: r.id,
   }))
+}
+
+export async function loadMastery(studentId: string, difficulty: Difficulty): Promise<Set<number>> {
+  const { data } = await supabase
+    .from('student_mastery')
+    .select('question_id')
+    .eq('student_id', studentId)
+    .eq('difficulty', difficulty)
+    .eq('mastered', true)
+  return new Set((data ?? []).map((r: { question_id: number }) => r.question_id))
+}
+
+export async function updateMastery(
+  studentId: string,
+  difficulty: Difficulty,
+  results: { questionId: number; isCorrect: boolean }[]
+): Promise<void> {
+  if (results.length === 0) return
+  await supabase.from('student_mastery').upsert(
+    results.map(r => ({
+      student_id: studentId,
+      question_id: r.questionId,
+      difficulty,
+      mastered: r.isCorrect,
+    })),
+    { onConflict: 'student_id,question_id,difficulty' }
+  )
+}
+
+export async function getQuestionsForStudent(difficulty: Difficulty, studentId: string, count = 10) {
+  const pool = getPoolForDifficulty(difficulty)
+  const masteredIds = await loadMastery(studentId, difficulty)
+  const unmastered = pool.filter(q => !masteredIds.has(q.id))
+
+  if (unmastered.length === 0) {
+    // 전체 마스터 → 전체 풀에서 랜덤
+    return shuffle(pool).slice(0, count)
+  }
+  if (unmastered.length >= count) {
+    // 미마스터 문제가 충분 → 미마스터만
+    return shuffle(unmastered).slice(0, count)
+  }
+  // 미마스터 < count → 미마스터 전부 + 마스터로 채움
+  const mastered = pool.filter(q => masteredIds.has(q.id))
+  return shuffle([...unmastered, ...shuffle(mastered).slice(0, count - unmastered.length)])
 }
 
 export function calcStats(records: PlayerRecord[]) {

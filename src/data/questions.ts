@@ -8829,6 +8829,12 @@ export function getQuestions(difficulty: Difficulty, count = 10): Question[] {
   const levels = DIFFICULTY_MAP[difficulty]
   const filtered = questions.filter(q => levels.includes(q.difficulty))
   const shuffled = shuffle(filtered)
-  // 문항이 count보다 적을 경우 있는 만큼만 반환
   return shuffled.slice(0, Math.min(count, shuffled.length))
 }
+
+export function getPoolForDifficulty(difficulty: Difficulty): Question[] {
+  const levels = DIFFICULTY_MAP[difficulty]
+  return questions.filter(q => levels.includes(q.difficulty))
+}
+
+export { shuffle }
