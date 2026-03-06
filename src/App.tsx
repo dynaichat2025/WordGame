@@ -5,6 +5,12 @@ import StartScreen from './components/StartScreen'
 import QuizScreen from './components/QuizScreen'
 import ResultScreen from './components/ResultScreen'
 
+export interface AnswerRecord {
+  question: Question
+  selected: number | 'timeout'
+  isCorrect: boolean
+}
+
 interface GameState {
   screen: Screen
   nickname: string
@@ -12,6 +18,7 @@ interface GameState {
   questions: Question[]
   score: number
   correct: number
+  answers: AnswerRecord[]
 }
 
 const initialState: GameState = {
@@ -21,6 +28,7 @@ const initialState: GameState = {
   questions: [],
   score: 0,
   correct: 0,
+  answers: [],
 }
 
 export default function App() {
@@ -34,11 +42,12 @@ export default function App() {
       questions: getQuestions(difficulty, 10),
       score: 0,
       correct: 0,
+      answers: [],
     })
   }
 
-  const handleFinish = (score: number, correct: number) => {
-    setState(s => ({ ...s, screen: 'result', score, correct }))
+  const handleFinish = (score: number, correct: number, answers: AnswerRecord[]) => {
+    setState(s => ({ ...s, screen: 'result', score, correct, answers }))
   }
 
   const handleRetry = () => {
@@ -48,6 +57,7 @@ export default function App() {
       questions: getQuestions(s.difficulty, 10),
       score: 0,
       correct: 0,
+      answers: [],
     }))
   }
 
@@ -72,6 +82,7 @@ export default function App() {
       correct={state.correct}
       total={state.questions.length}
       difficulty={state.difficulty}
+      answers={state.answers}
       onRetry={handleRetry}
       onHome={handleHome}
     />

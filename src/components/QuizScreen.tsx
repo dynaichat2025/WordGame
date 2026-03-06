@@ -1,10 +1,11 @@
 import { useState, useEffect, useCallback, useRef, memo } from 'react'
 import type { Question, Difficulty } from '../types'
+import type { AnswerRecord } from '../App'
 
 interface Props {
   questions: Question[]
   difficulty: Difficulty
-  onFinish: (score: number, correct: number) => void
+  onFinish: (score: number, correct: number, answers: AnswerRecord[]) => void
 }
 
 const TIME_LIMIT: Record<Difficulty, number> = {
@@ -51,6 +52,7 @@ export default function QuizScreen({ questions, difficulty, onFinish }: Props) {
   const [animKey, setAnimKey] = useState(0)
   const [correctIdx, setCorrectIdx] = useState<number | null>(null)
   const [scorePopup, setScorePopup] = useState<number | null>(null)
+  const answersRef = useRef<AnswerRecord[]>([])
 
   const current = questions[index]
   const total = questions.length
@@ -77,7 +79,7 @@ export default function QuizScreen({ questions, difficulty, onFinish }: Props) {
     setAnimKey(k => k + 1)
 
     if (index + 1 >= total) {
-      onFinish(scoreRef.current, correctRef.current)
+      onFinish(scoreRef.current, correctRef.current, answersRef.current)
     } else {
       setIndex(i => i + 1)
       isTransitioningRef.current = false
@@ -91,7 +93,13 @@ export default function QuizScreen({ questions, difficulty, onFinish }: Props) {
 
       setSelected(idx)
 
-      if (idx === current.answer) {
+      const isCorrect = idx === current.answer
+      answersRef.current = [
+        ...answersRef.current,
+        { question: current, selected: idx, isCorrect },
+      ]
+
+      if (isCorrect) {
         const newCombo = combo + 1
         setCombo(newCombo)
         setCorrectIdx(idx)
@@ -118,6 +126,10 @@ export default function QuizScreen({ questions, difficulty, onFinish }: Props) {
     if (timeLeft <= 0) {
       setSelected('timeout')
       setCombo(0)
+      answersRef.current = [
+        ...answersRef.current,
+        { question: current, selected: 'timeout', isCorrect: false },
+      ]
       if (nextTimerRef.current) clearTimeout(nextTimerRef.current)
       nextTimerRef.current = setTimeout(goNext, 1500)
       return
