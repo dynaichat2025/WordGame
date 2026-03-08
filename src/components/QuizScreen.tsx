@@ -12,6 +12,7 @@ const TIME_LIMIT: Record<Difficulty, number> = {
   easy: 60,
   normal: 60,
   hard: 60,
+  daejanggeum: 60,
 }
 
 const LABELS = ['①', '②', '③', '④']

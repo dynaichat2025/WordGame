@@ -19,6 +19,7 @@ const DIFFICULTY_LABEL: Record<Difficulty, string> = {
   easy: 'Easy',
   normal: 'Normal',
   hard: 'Hard',
+  daejanggeum: '대장금',
 }
 
 const GRADE_INFO = {
