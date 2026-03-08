@@ -44,7 +44,6 @@ export default function StartScreen({ onStart, onTeacher }: Props) {
   const [pinInput, setPinInput] = useState('')
   const [pinError, setPinError] = useState(false)
   const [pinVerified, setPinVerified] = useState(false)
-  const [nickname, setNickname] = useState('')
   const [difficulty, setDifficulty] = useState<Difficulty>('normal')
 
   useEffect(() => {
@@ -58,13 +57,11 @@ export default function StartScreen({ onStart, onTeacher }: Props) {
       setPinInput('')
       setPinError(false)
       setPinVerified(false)
-      setNickname('')
     } else {
       setSelectedStudent(s)
       setPinInput('')
       setPinError(false)
       setPinVerified(false)
-      setNickname(s.name)
     }
   }
 
@@ -80,12 +77,11 @@ export default function StartScreen({ onStart, onTeacher }: Props) {
   }
 
   const handleStart = () => {
-    const name = nickname.trim() || '익명'
-    const studentId = pinVerified && selectedStudent ? selectedStudent.id : undefined
-    onStart(name, difficulty, studentId)
+    if (!pinVerified || !selectedStudent) return
+    onStart(selectedStudent.name, difficulty, selectedStudent.id)
   }
 
-  const canStart = !selectedStudent || pinVerified
+  const canStart = pinVerified
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-sky-400 to-blue-600 flex items-center justify-center p-4">
@@ -97,9 +93,12 @@ export default function StartScreen({ onStart, onTeacher }: Props) {
         </div>
 
         {/* 학생 선택 */}
-        {students.length > 0 && (
-          <div className="mb-5">
-            <label className="block text-base font-semibold text-gray-600 mb-2">학생 선택</label>
+        <div className="mb-5">
+          <label className="block text-base font-semibold text-gray-600 mb-2">학생 선택</label>
+          {students.length === 0 ? (
+            <p className="text-sm text-gray-400 text-center py-4">학생 목록을 불러오는 중...</p>
+          ) : (
+            <>
             <div className="flex flex-wrap gap-2 max-h-28 overflow-y-auto px-1 py-1">
               {students.map(s => (
                 <button
@@ -141,26 +140,9 @@ export default function StartScreen({ onStart, onTeacher }: Props) {
               </div>
             )}
             {pinError && <p className="text-red-500 text-xs mt-1 ml-1">PIN이 틀렸어요. 다시 입력해주세요.</p>}
-          </div>
-        )}
-
-        {/* 닉네임 (학생 미선택시) */}
-        {!selectedStudent && (
-          <div className="mb-5">
-            <label className="block text-base font-semibold text-gray-600 mb-2">
-              {students.length > 0 ? '또는 직접 입력' : '닉네임'}
-            </label>
-            <input
-              type="text"
-              value={nickname}
-              onChange={e => setNickname(e.target.value)}
-              onKeyDown={e => e.key === 'Enter' && canStart && handleStart()}
-              placeholder="이름을 입력하세요"
-              maxLength={10}
-              className="w-full border-2 border-blue-200 rounded-xl px-4 py-3 text-lg focus:outline-none focus:border-blue-500 transition-colors"
-            />
-          </div>
-        )}
+            </>
+          )}
+        </div>
 
         <div className="mb-8">
           <label className="block text-base font-semibold text-gray-600 mb-2">난이도</label>
@@ -185,7 +167,7 @@ export default function StartScreen({ onStart, onTeacher }: Props) {
           disabled={!canStart}
           className="w-full bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-xl font-bold py-4 rounded-2xl transition-all shadow-lg disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          {!canStart ? 'PIN을 먼저 입력하세요' : '시작하기 🚀'}
+          {!selectedStudent ? '학생을 선택하세요' : !canStart ? 'PIN을 먼저 입력하세요' : '시작하기 🚀'}
         </button>
 
         <button
