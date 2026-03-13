@@ -5,7 +5,7 @@ import pkg from './package.json' with { type: 'json' }
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: '/WordGame/',
+  base: process.env.VERCEL ? '/' : '/WordGame/',
   define: {
     APP_VERSION: JSON.stringify(pkg.version),
   },
