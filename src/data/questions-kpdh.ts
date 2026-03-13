@@ -162,4 +162,16 @@ export const kpdhQuestions: Question[] = [
   { id: 1859, sentence: '헌트릭스의 연습실에는 셀린이 남긴 고대 문서와 부적이 보관되어 있습니다.', word: '부적', options: ['악기', '재앙을 막기 위해 지니는 종이나 물건', '음식', '옷'], answer: 1, difficulty: 'kpdh' },
   { id: 1860, sentence: '영화에서 까치는 위험을 미리 알려주는 전령의 역할을 합니다.', word: '전령', options: ['적', '소식을 전하는 사자', '구경꾼', '요리사'], answer: 1, difficulty: 'kpdh' },
   { id: 1861, sentence: '케이팝 데몬 헌터스의 속편 제작이 큰 흥행 성공에 힘입어 확정되었습니다.', word: '속편', options: ['처음 작품', '이전 작품에 이어지는 다음 작품', '광고', '예고편'], answer: 1, difficulty: 'kpdh' },
+
+  // Trivia 문제 5
+  { id: 1862, sentence: '영화에서 헌트릭스는 연습생 시절의 고된 수련을 통해 실력을 쌓았습니다.', word: '수련', options: ['놀이', '기술이나 정신을 갈고닦는 훈련', '휴가', '식사'], answer: 1, difficulty: 'kpdh' },
+  { id: 1863, sentence: '진우는 인간에게 동정심을 느끼면서도 귀마에 대한 충성 사이에서 갈등합니다.', word: '갈등', options: ['평화로운 상태', '서로 다른 마음이 부딪혀 괴로운 것', '기쁜 상태', '잠자는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1864, sentence: '영화에서 한국의 사물놀이 리듬이 전투 장면의 배경 음악에 활용되었습니다.', word: '사물놀이', options: ['서양 악기 연주', '꽹과리, 징, 장구, 북 네 가지 악기의 전통 음악', '노래 대회', '그림 그리기'], answer: 1, difficulty: 'kpdh' },
+  { id: 1865, sentence: '셀린은 루미에게 자신의 유산을 물려주며 새로운 세대를 신뢰합니다.', word: '유산', options: ['쓰레기', '앞 세대가 남겨 준 소중한 것', '무기', '음식'], answer: 1, difficulty: 'kpdh' },
+  { id: 1866, sentence: '영화의 엔딩 크레딧에는 한국 민화 스타일의 삽화가 흘러나옵니다.', word: '삽화', options: ['음악', '글이나 영상 사이에 넣는 그림', '자막', '광고'], answer: 1, difficulty: 'kpdh' },
+  { id: 1867, sentence: '귀마의 악마 군단은 위계질서가 뚜렷하여 반란을 허용하지 않습니다.', word: '위계질서', options: ['자유로운 분위기', '높고 낮은 등급에 따른 순서와 규율', '친구 관계', '놀이 규칙'], answer: 1, difficulty: 'kpdh' },
+  { id: 1868, sentence: '영화에서 헌트릭스의 팬 이름은 "가디언즈"로 수호자라는 뜻을 담고 있습니다.', word: '가디언즈', options: ['파괴자', '지키는 사람들, 수호자들', '적', '구경꾼'], answer: 1, difficulty: 'kpdh' },
+  { id: 1869, sentence: '한국 전통의 오방색은 파랑, 빨강, 노랑, 하양, 검정 다섯 가지 색입니다.', word: '오방색', options: ['무지개 색', '한국 전통의 다섯 가지 방위 색', '수채화 물감', '음식 색소'], answer: 1, difficulty: 'kpdh' },
+  { id: 1870, sentence: '영화에서 미라의 춤에는 부채춤과 탈춤의 동작이 현대적으로 재해석되어 있습니다.', word: '재해석', options: ['그대로 따라하는 것', '기존의 것을 새로운 관점으로 다시 풀어내는 것', '없애는 것', '잊어버리는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1871, sentence: '케이팝 데몬 헌터스는 한국 관광공사와 협업하여 한국 문화를 세계에 알렸습니다.', word: '협업', options: ['혼자 일하는 것', '함께 힘을 합쳐 일하는 것', '경쟁하는 것', '방해하는 것'], answer: 1, difficulty: 'kpdh' },
 ]
