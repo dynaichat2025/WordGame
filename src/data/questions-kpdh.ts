@@ -138,4 +138,16 @@ export const kpdhQuestions: Question[] = [
   { id: 1839, sentence: '헌트릭스의 매니저 바비는 멤버들의 정체를 비밀로 유지하려 애씁니다.', word: '유지', options: ['버리는 것', '어떤 상태를 계속 지켜나가는 것', '바꾸는 것', '잊어버리는 것'], answer: 1, difficulty: 'kpdh' },
   { id: 1840, sentence: '영화에서 삼한습유라는 고전 소설이 귀마 캐릭터의 모티브가 되었습니다.', word: '모티브', options: ['결말', '창작의 동기가 된 소재나 아이디어', '배경 음악', '의상'], answer: 1, difficulty: 'kpdh' },
   { id: 1841, sentence: '대대로 세 명의 헌터가 한 조를 이루어 혼문을 지켜온 것이 전통입니다.', word: '대대로', options: ['한 번만', '여러 세대에 걸쳐 계속', '갑자기', '가끔'], answer: 1, difficulty: 'kpdh' },
+
+  // Trivia 문제 3
+  { id: 1842, sentence: '영화에서 콘도그는 헌트릭스 멤버들이 즐겨 먹는 길거리 간식으로 나옵니다.', word: '길거리', options: ['식당 안', '사람들이 다니는 거리, 도로변', '집 안', '학교'], answer: 1, difficulty: 'kpdh' },
+  { id: 1843, sentence: '케이팝 데몬 헌터스의 그래픽 노블이 펭귄랜덤하우스에서 출간되었습니다.', word: '출간', options: ['읽는 것', '책이나 작품을 만들어 세상에 내놓는 것', '버리는 것', '빌리는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1844, sentence: '영화에서 헌트릭스의 의상은 한복과 현대 패션을 결합한 디자인입니다.', word: '결합', options: ['나누는 것', '둘 이상을 합쳐서 하나로 만드는 것', '떼어내는 것', '감추는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1845, sentence: '진우가 연주하는 비파는 원래 악마의 힘을 증폭시키는 도구입니다.', word: '증폭', options: ['줄이는 것', '세기나 규모를 크게 늘리는 것', '멈추는 것', '없애는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1846, sentence: '영화 속 서울의 풍경에는 경복궁과 남산타워 같은 명소가 등장합니다.', word: '명소', options: ['숨겨진 장소', '이름난 유명한 장소', '위험한 곳', '빈 곳'], answer: 1, difficulty: 'kpdh' },
+  { id: 1847, sentence: '케이팝 데몬 헌터스는 한국어 가사가 포함된 오리지널 곡들이 화제가 되었습니다.', word: '화제', options: ['불', '사람들이 많이 이야기하는 소재', '비밀', '걱정거리'], answer: 1, difficulty: 'kpdh' },
+  { id: 1848, sentence: '영화에서 귀마의 왕좌는 저승 깊은 곳에 숨겨져 있습니다.', word: '왕좌', options: ['침대', '왕이 앉는 자리, 권력의 상징', '식탁', '문'], answer: 1, difficulty: 'kpdh' },
+  { id: 1849, sentence: '헌트릭스는 블랙핑크, 트와이스 같은 실제 걸그룹에서 영감을 받았습니다.', word: '실제', options: ['가짜의', '꾸며낸 것이 아닌 진짜의', '상상 속의', '미래의'], answer: 1, difficulty: 'kpdh' },
+  { id: 1850, sentence: '영화의 클라이맥스에서 헌트릭스는 황금 혼문을 완성하는 합창을 부릅니다.', word: '클라이맥스', options: ['시작 부분', '이야기에서 가장 긴장감 높은 절정 부분', '끝나는 부분', '쉬는 시간'], answer: 1, difficulty: 'kpdh' },
+  { id: 1851, sentence: '사자 보이즈의 멤버 이름에는 로맨스, 베이비, 애비, 미스터리가 있습니다.', word: '멤버', options: ['관객', '모임이나 그룹에 속한 구성원', '감독', '팬'], answer: 1, difficulty: 'kpdh' },
 ]
