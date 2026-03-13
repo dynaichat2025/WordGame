@@ -60,4 +60,16 @@ export const kpdhQuestions: Question[] = [
   { id: 1752, sentence: '라면은 뜨거운 물에 끓여 먹는 한국에서 인기 있는 면 요리입니다.', word: '라면', options: ['과일', '뜨거운 물에 끓이는 면 요리', '샐러드', '떡'], answer: 1, difficulty: 'kpdh' },
   { id: 1753, sentence: '빙수는 얼음을 갈고 달콤한 재료를 올린 여름 간식입니다.', word: '빙수', options: ['뜨거운 국', '얼음을 간 달콤한 여름 간식', '볶음밥', '김치'], answer: 1, difficulty: 'kpdh' },
   { id: 1754, sentence: '떡볶이는 떡을 매콤한 양념에 볶아 만든 길거리 음식입니다.', word: '떡볶이', options: ['생선회', '떡을 매콤하게 볶은 길거리 음식', '과일 주스', '빵'], answer: 1, difficulty: 'kpdh' },
+
+  // 추가 문제
+  { id: 1761, sentence: '헌트릭스는 세 명의 수호자가 대대로 혼문을 지켜온 전통을 잇고 있습니다.', word: '수호자', options: ['파괴하는 사람', '소중한 것을 지키는 사람', '구경하는 사람', '도망치는 사람'], answer: 1, difficulty: 'kpdh' },
+  { id: 1762, sentence: '귀마는 인간 세계를 정복하려는 야망을 품고 있습니다.', word: '야망', options: ['작은 소원', '크고 대담한 욕심이나 꿈', '슬픈 감정', '두려운 마음'], answer: 1, difficulty: 'kpdh' },
+  { id: 1763, sentence: '사자 보이즈는 팬들의 환호 속에 숨겨진 정체를 감추고 있습니다.', word: '정체', options: ['노래 실력', '숨겨진 본래의 모습', '좋아하는 음식', '사는 곳'], answer: 1, difficulty: 'kpdh' },
+  { id: 1764, sentence: '조이는 가사를 직접 쓰는 작사가이기도 합니다.', word: '작사', options: ['춤을 추는 것', '노래의 가사를 쓰는 것', '악기를 연주하는 것', '그림을 그리는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1765, sentence: '헌트릭스의 노래가 차트 순위에서 올라가자 혼문이 강화되었습니다.', word: '강화', options: ['약해지는 것', '더 세고 튼튼해지는 것', '사라지는 것', '변하지 않는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1766, sentence: '한국에서 호랑이는 나쁜 기운을 쫓아내는 수호 동물로 여겨집니다.', word: '수호 동물', options: ['애완동물', '지키고 보호해 주는 동물', '사냥하는 동물', '동물원의 동물'], answer: 1, difficulty: 'kpdh' },
+  { id: 1767, sentence: '귀마의 부하들은 인간의 모습으로 위장하여 사람들 사이에 숨어 있습니다.', word: '위장', options: ['솔직하게 말하는 것', '본모습을 숨기고 다른 모습으로 꾸미는 것', '크게 소리치는 것', '빠르게 달리는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1768, sentence: '미라는 전통 무용과 현대 춤을 융합한 독특한 안무를 만듭니다.', word: '융합', options: ['나누는 것', '서로 다른 것을 합쳐 새로운 것을 만드는 것', '없애는 것', '복사하는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1769, sentence: '셀린은 과거의 전투에서 입은 부상 때문에 은퇴할 수밖에 없었습니다.', word: '부상', options: ['선물', '싸움이나 사고로 몸을 다치는 것', '승리', '기쁜 일'], answer: 1, difficulty: 'kpdh' },
+  { id: 1770, sentence: '헌트릭스는 결국 단결하여 귀마를 물리치는 데 성공합니다.', word: '단결', options: ['혼자 행동하는 것', '마음과 힘을 하나로 모으는 것', '싸우는 것', '포기하는 것'], answer: 1, difficulty: 'kpdh' },
 ]
