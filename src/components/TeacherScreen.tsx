@@ -49,6 +49,101 @@ function NoteCard({ item }: { item: AnswerRecord }) {
   )
 }
 
+function downloadFile(filename: string, content: string, type: string) {
+  const blob = new Blob(['\uFEFF' + content], { type: `${type};charset=utf-8` })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = filename
+  a.click()
+  URL.revokeObjectURL(url)
+}
+
+function formatAnswersForText(answers: AnswerRecord[], studentName: string, record: PlayerRecord): string {
+  const wrong = answers.filter(a => !a.isCorrect)
+  const correct = answers.filter(a => a.isCorrect)
+  const lines: string[] = [
+    `학생: ${studentName}`,
+    `점수: ${record.score}점 | ${record.correct}/${record.total}문제 (${Math.round((record.correct / record.total) * 100)}%)`,
+    `난이도: ${DIFFICULTY_LABEL[record.difficulty]} | 날짜: ${record.date}`,
+    '',
+    `=== 오답노트 (${wrong.length}개) ===`,
+  ]
+  if (wrong.length === 0) {
+    lines.push('오답 없음')
+  } else {
+    wrong.forEach((a, i) => {
+      const sel = a.selected === 'timeout' ? '시간 초과' : a.question.options[a.selected as number]
+      lines.push(`${i + 1}. 문장: ${a.question.sentence}`)
+      lines.push(`   단어: ${a.question.word}`)
+      lines.push(`   정답: ${a.question.options[a.question.answer]}`)
+      lines.push(`   선택: ${sel}`)
+      lines.push('')
+    })
+  }
+  lines.push('')
+  lines.push(`=== 정답노트 (${correct.length}개) ===`)
+  if (correct.length === 0) {
+    lines.push('정답 없음')
+  } else {
+    correct.forEach((a, i) => {
+      lines.push(`${i + 1}. 문장: ${a.question.sentence}`)
+      lines.push(`   단어: ${a.question.word}`)
+      lines.push(`   정답: ${a.question.options[a.question.answer]}`)
+      lines.push('')
+    })
+  }
+  return lines.join('\n')
+}
+
+function formatAnswersForCsv(answers: AnswerRecord[]): string {
+  const header = '번호,정오답,문장,단어,정답,선택'
+  const rows = answers.map((a, i) => {
+    const sel = a.selected === 'timeout' ? '시간 초과' : a.question.options[a.selected as number]
+    const esc = (s: string) => `"${s.replace(/"/g, '""')}"`
+    return [
+      i + 1,
+      a.isCorrect ? 'O' : 'X',
+      esc(a.question.sentence),
+      esc(a.question.word),
+      esc(a.question.options[a.question.answer]),
+      esc(sel),
+    ].join(',')
+  })
+  return [header, ...rows].join('\n')
+}
+
+function downloadPdf(answers: AnswerRecord[], studentName: string, record: PlayerRecord) {
+  const wrong = answers.filter(a => !a.isCorrect)
+  const correct = answers.filter(a => a.isCorrect)
+
+  const renderSection = (title: string, items: AnswerRecord[], isWrong: boolean) => {
+    if (items.length === 0) return `<h2 style="color:#888;margin-top:24px;">${title} - 없음</h2>`
+    return `<h2 style="margin-top:24px;">${title}</h2>` + items.map((a) => {
+      const sel = a.selected === 'timeout' ? '시간 초과' : a.question.options[a.selected as number]
+      return `<div style="border:1px solid ${isWrong ? '#fca5a5' : '#86efac'};border-radius:8px;padding:12px;margin:8px 0;background:${isWrong ? '#fef2f2' : '#f0fdf4'}">
+        <p style="color:#666;font-size:12px;margin:0 0 4px;">문장</p>
+        <p style="font-size:15px;margin:0 0 8px;"><b>${a.question.word}</b> - ${a.question.sentence}</p>
+        <p style="margin:2px 0;"><span style="color:#16a34a;font-weight:bold;">정답:</span> ${a.question.options[a.question.answer]}</p>
+        ${isWrong ? `<p style="margin:2px 0;"><span style="color:#ef4444;font-weight:bold;">선택:</span> ${sel}</p>` : ''}
+      </div>`
+    }).join('')
+  }
+
+  const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>학습 기록</title>
+    <style>body{font-family:-apple-system,sans-serif;max-width:700px;margin:0 auto;padding:20px;} @media print{body{padding:0;}}</style>
+    </head><body>
+    <h1 style="font-size:20px;margin-bottom:4px;">${studentName} - 학습 기록</h1>
+    <p style="color:#666;">${record.score}점 | ${record.correct}/${record.total}문제 (${Math.round((record.correct / record.total) * 100)}%) | ${DIFFICULTY_LABEL[record.difficulty]} | ${record.date}</p>
+    ${renderSection(`오답노트 (${wrong.length}개)`, wrong, true)}
+    ${renderSection(`정답노트 (${correct.length}개)`, correct, false)}
+    <script>window.onload=()=>{window.print();}</script>
+    </body></html>`
+
+  const w = window.open('', '_blank')
+  if (w) { w.document.write(html); w.document.close() }
+}
+
 interface Props {
   onClose: () => void
 }
@@ -351,6 +446,26 @@ export default function TeacherScreen({ onClose }: Props) {
                       <div className="text-center py-8 text-gray-400 text-sm">이 기록에는 상세 답안 데이터가 없습니다.</div>
                     ) : (
                       <>
+                        <div className="flex gap-2 mb-3">
+                          <button
+                            onClick={() => downloadPdf(detailAnswers!, selectedStudent?.name ?? '', detailRecord)}
+                            className="flex-1 bg-red-50 text-red-600 border border-red-200 rounded-xl py-1.5 text-xs font-bold hover:bg-red-100 active:scale-95 transition-all"
+                          >PDF</button>
+                          <button
+                            onClick={() => {
+                              const fn = `${selectedStudent?.name}_${detailRecord.date}.csv`
+                              downloadFile(fn, formatAnswersForCsv(detailAnswers!), 'text/csv')
+                            }}
+                            className="flex-1 bg-green-50 text-green-600 border border-green-200 rounded-xl py-1.5 text-xs font-bold hover:bg-green-100 active:scale-95 transition-all"
+                          >CSV</button>
+                          <button
+                            onClick={() => {
+                              const fn = `${selectedStudent?.name}_${detailRecord.date}.txt`
+                              downloadFile(fn, formatAnswersForText(detailAnswers!, selectedStudent?.name ?? '', detailRecord), 'text/plain')
+                            }}
+                            className="flex-1 bg-blue-50 text-blue-600 border border-blue-200 rounded-xl py-1.5 text-xs font-bold hover:bg-blue-100 active:scale-95 transition-all"
+                          >TXT</button>
+                        </div>
                         <div className="flex gap-1 bg-gray-100 rounded-2xl p-1 mb-3">
                           {([
                             { key: 'wrong' as const, label: `오답노트 ${wrongAnswers.length}` },
