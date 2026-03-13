@@ -13,6 +13,7 @@ const TIME_LIMIT: Record<Difficulty, number> = {
   normal: 60,
   hard: 60,
   daejanggeum: 60,
+  math: 60,
 }
 
 const LABELS = ['①', '②', '③', '④']
@@ -222,9 +223,13 @@ export default function QuizScreen({ questions, difficulty, onFinish }: Props) {
           </div>
 
           <p className="text-center text-gray-500 font-medium mb-4 text-base">
-            위 문장에서{' '}
-            <span className="text-blue-600 font-bold">'{current.word}'</span>
-            의 뜻은 무엇인가요?
+            {difficulty === 'math' ? (
+              <>정답을 고르세요!</>
+            ) : (
+              <>위 문장에서{' '}
+              <span className="text-blue-600 font-bold">'{current.word}'</span>
+              의 뜻은 무엇인가요?</>
+            )}
           </p>
         </div>
 

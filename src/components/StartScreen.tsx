@@ -36,6 +36,13 @@ const difficulties: { value: Difficulty; label: string; desc: string; selected: 
     selected: 'bg-purple-100 border-purple-500 text-purple-800',
     idle: 'bg-white border-gray-200 text-gray-500',
   },
+  {
+    value: 'math',
+    label: '수학',
+    desc: '초등수학',
+    selected: 'bg-cyan-100 border-cyan-500 text-cyan-800',
+    idle: 'bg-white border-gray-200 text-gray-500',
+  },
 ]
 
 export default function StartScreen({ onStart, onTeacher }: Props) {
@@ -146,7 +153,7 @@ export default function StartScreen({ onStart, onTeacher }: Props) {
 
         <div className="mb-8">
           <label className="block text-base font-semibold text-gray-600 mb-2">난이도</label>
-          <div className="grid grid-cols-4 gap-2">
+          <div className="grid grid-cols-5 gap-2">
             {difficulties.map(d => (
               <button
                 key={d.value}
