@@ -22,6 +22,7 @@ const DIFFICULTY_LABEL: Record<Difficulty, string> = {
   daejanggeum: '대장금',
   math: '수학',
   proverb: '속담',
+  engproverb: '영어속담',
 }
 
 const GRADE_INFO = {

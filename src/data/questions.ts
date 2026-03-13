@@ -7,6 +7,7 @@ const DIFFICULTY_MAP: Record<Difficulty, Difficulty[]> = {
   daejanggeum: ['daejanggeum'],
   math: ['math'],
   proverb: ['proverb'],
+  engproverb: ['engproverb'],
 }
 
 // Fisher-Yates 셔플 (균일한 무작위성 보장)
@@ -27,6 +28,7 @@ const loaders: Record<Difficulty, () => Promise<Question[]>> = {
   daejanggeum: () => import('./questions-daejanggeum').then(m => m.daejanggeumQuestions),
   math: () => import('./questions-math').then(m => m.mathQuestions),
   proverb: () => import('./questions-proverb').then(m => m.proverbQuestions),
+  engproverb: () => import('./questions-engproverb').then(m => m.engproverbQuestions),
 }
 
 // 캐시: 한 번 로드된 난이도는 재사용

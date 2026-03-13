@@ -50,6 +50,13 @@ const difficulties: { value: Difficulty; label: string; desc: string; selected: 
     selected: 'bg-orange-100 border-orange-500 text-orange-800',
     idle: 'bg-white border-gray-200 text-gray-500',
   },
+  {
+    value: 'engproverb',
+    label: 'Proverb',
+    desc: '영어속담',
+    selected: 'bg-indigo-100 border-indigo-500 text-indigo-800',
+    idle: 'bg-white border-gray-200 text-gray-500',
+  },
 ]
 
 export default function StartScreen({ onStart, onTeacher }: Props) {
@@ -160,7 +167,7 @@ export default function StartScreen({ onStart, onTeacher }: Props) {
 
         <div className="mb-8">
           <label className="block text-base font-semibold text-gray-600 mb-2">난이도</label>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-4 gap-2">
             {difficulties.map(d => (
               <button
                 key={d.value}
