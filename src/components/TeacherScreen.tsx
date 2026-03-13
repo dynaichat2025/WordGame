@@ -281,6 +281,8 @@ export default function TeacherScreen({ onClose }: Props) {
         >
           게임으로 돌아가기
         </button>
+
+        <p className="text-center text-gray-300 text-xs mt-4">v{APP_VERSION}</p>
       </div>
     </div>
   )

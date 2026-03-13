@@ -176,6 +176,8 @@ export default function StartScreen({ onStart, onTeacher }: Props) {
         >
           선생님 대시보드
         </button>
+
+        <p className="text-center text-gray-300 text-xs mt-4">v{APP_VERSION}</p>
       </div>
     </div>
   )
