@@ -150,4 +150,16 @@ export const kpdhQuestions: Question[] = [
   { id: 1849, sentence: '헌트릭스는 블랙핑크, 트와이스 같은 실제 걸그룹에서 영감을 받았습니다.', word: '실제', options: ['가짜의', '꾸며낸 것이 아닌 진짜의', '상상 속의', '미래의'], answer: 1, difficulty: 'kpdh' },
   { id: 1850, sentence: '영화의 클라이맥스에서 헌트릭스는 황금 혼문을 완성하는 합창을 부릅니다.', word: '클라이맥스', options: ['시작 부분', '이야기에서 가장 긴장감 높은 절정 부분', '끝나는 부분', '쉬는 시간'], answer: 1, difficulty: 'kpdh' },
   { id: 1851, sentence: '사자 보이즈의 멤버 이름에는 로맨스, 베이비, 애비, 미스터리가 있습니다.', word: '멤버', options: ['관객', '모임이나 그룹에 속한 구성원', '감독', '팬'], answer: 1, difficulty: 'kpdh' },
+
+  // Trivia 문제 4
+  { id: 1852, sentence: '영화에서 헌트릭스가 조화롭게 노래할 때 혼문이 가장 강력해집니다.', word: '조화롭다', options: ['어울리지 않다', '서로 잘 어울려 균형이 맞다', '시끄럽다', '혼란스럽다'], answer: 1, difficulty: 'kpdh' },
+  { id: 1853, sentence: '귀마는 수천 년 동안 봉인되어 있다가 혼문이 약해지자 깨어났습니다.', word: '깨어나다', options: ['잠드는 것', '잠이나 봉인에서 벗어나 활동하기 시작하다', '숨는 것', '사라지는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1854, sentence: '영화의 OST 중 여러 곡에 한국어 가사가 자연스럽게 섞여 있습니다.', word: 'OST', options: ['대본', '영화나 드라마의 삽입곡, 오리지널 사운드트랙', '포스터', '예고편'], answer: 1, difficulty: 'kpdh' },
+  { id: 1855, sentence: '한국 전통에서 붉은색은 악귀를 쫓아내는 주술적인 힘이 있다고 믿었습니다.', word: '주술적', options: ['과학적인', '마법이나 신비한 힘과 관련된', '평범한', '현대적인'], answer: 1, difficulty: 'kpdh' },
+  { id: 1856, sentence: '영화에서 루미는 자신의 정체성을 찾아가는 성장 과정을 겪습니다.', word: '정체성', options: ['주소', '자기가 누구인지에 대한 인식', '취미', '직업'], answer: 1, difficulty: 'kpdh' },
+  { id: 1857, sentence: '사자 보이즈의 팬미팅은 사실 팬들의 에너지를 수집하는 의식이었습니다.', word: '팬미팅', options: ['운동 경기', '팬과 가수가 만나는 행사', '시험', '수업'], answer: 1, difficulty: 'kpdh' },
+  { id: 1858, sentence: '영화는 한국의 전통 설화와 현대 케이팝 문화를 절묘하게 엮었습니다.', word: '절묘하다', options: ['어색하다', '매우 교묘하고 뛰어나다', '단순하다', '지루하다'], answer: 1, difficulty: 'kpdh' },
+  { id: 1859, sentence: '헌트릭스의 연습실에는 셀린이 남긴 고대 문서와 부적이 보관되어 있습니다.', word: '부적', options: ['악기', '재앙을 막기 위해 지니는 종이나 물건', '음식', '옷'], answer: 1, difficulty: 'kpdh' },
+  { id: 1860, sentence: '영화에서 까치는 위험을 미리 알려주는 전령의 역할을 합니다.', word: '전령', options: ['적', '소식을 전하는 사자', '구경꾼', '요리사'], answer: 1, difficulty: 'kpdh' },
+  { id: 1861, sentence: '케이팝 데몬 헌터스의 속편 제작이 큰 흥행 성공에 힘입어 확정되었습니다.', word: '속편', options: ['처음 작품', '이전 작품에 이어지는 다음 작품', '광고', '예고편'], answer: 1, difficulty: 'kpdh' },
 ]
