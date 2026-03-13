@@ -99,4 +99,18 @@ export const kpdhQuestions: Question[] = [
   { id: 1791, sentence: '미라는 공연 중 즉흥적으로 안무를 바꿔서 관객을 놀라게 했습니다.', word: '즉흥적', options: ['오래 준비한', '미리 계획하지 않고 그 자리에서 하는', '느린', '반복적인'], answer: 1, difficulty: 'kpdh' },
   { id: 1792, sentence: '헌트릭스의 노래는 사람들에게 위로와 희망을 전해줍니다.', word: '위로', options: ['비난', '슬프거나 힘든 사람을 따뜻하게 달래주는 것', '경쟁', '무관심'], answer: 1, difficulty: 'kpdh' },
   { id: 1793, sentence: '한국의 장승은 마을 입구에 세워 나쁜 귀신을 막아주는 수호신입니다.', word: '장승', options: ['다리', '마을을 지키는 나무나 돌 기둥 형태의 수호신', '우물', '지붕'], answer: 1, difficulty: 'kpdh' },
+
+  // 스토리 관련 문제
+  { id: 1801, sentence: '오래전 세 명의 여전사가 노래로 귀마를 봉인하는 혼문을 처음 만들었습니다.', word: '여전사', options: ['남자 군인', '싸우는 여자, 여성 전사', '요리사', '선생님'], answer: 1, difficulty: 'kpdh' },
+  { id: 1802, sentence: '혼문의 힘은 헌트릭스의 음원 순위와 직결되어 있습니다.', word: '직결', options: ['관계없는', '곧바로 연결되어 있는', '멀리 떨어진', '반대되는'], answer: 1, difficulty: 'kpdh' },
+  { id: 1803, sentence: '사자 보이즈가 차트 1위를 차지하자 혼문이 급격히 약화되었습니다.', word: '약화', options: ['강해지는 것', '힘이나 세력이 약해지는 것', '사라지는 것', '빛나는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1804, sentence: '진우는 다섯 악마를 이끌고 보이그룹으로 위장하는 계략을 세웠습니다.', word: '계략', options: ['착한 행동', '남을 속이기 위해 꾸민 꾀', '우연한 일', '실수'], answer: 1, difficulty: 'kpdh' },
+  { id: 1805, sentence: '셀린은 자신의 과거를 숨기고 루미를 평범하게 키우려 했습니다.', word: '평범하게', options: ['특별하게', '보통 사람처럼 특별할 것 없이', '위험하게', '슬프게'], answer: 1, difficulty: 'kpdh' },
+  { id: 1806, sentence: '루미는 자신이 데몬 헌터의 후손이라는 사실에 충격을 받았습니다.', word: '후손', options: ['조상', '뒤를 이어 태어난 자손', '친구', '선생님'], answer: 1, difficulty: 'kpdh' },
+  { id: 1807, sentence: '사자 보이즈는 콘서트에서 팬들의 영혼 에너지를 몰래 착취합니다.', word: '착취', options: ['선물하는 것', '남의 것을 억지로 빼앗아 이용하는 것', '나누는 것', '보호하는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1808, sentence: '헌트릭스는 황금 혼문을 완성하면 악마를 영원히 추방할 수 있습니다.', word: '추방', options: ['초대하는 것', '쫓아내어 내보내는 것', '환영하는 것', '숨겨주는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1809, sentence: '귀마는 혼문이 무너지는 틈을 타서 인간 세계로 침입하려 합니다.', word: '침입', options: ['초대받아 가는 것', '허락 없이 남의 영역에 들어가는 것', '떠나는 것', '구경하는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1810, sentence: '루미와 진우는 최종 대결에서 운명적인 맞대결을 펼칩니다.', word: '운명적', options: ['우연한', '피할 수 없이 정해진 듯한', '즐거운', '간단한'], answer: 1, difficulty: 'kpdh' },
+  { id: 1811, sentence: '헌트릭스의 세 멤버가 마음을 하나로 모아 부르는 노래가 각성의 열쇠입니다.', word: '각성', options: ['잠드는 것', '깨달아 눈을 뜨는 것', '잊어버리는 것', '쉬는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1812, sentence: '결국 헌트릭스는 셀린의 가르침을 떠올리며 기적적인 승리를 거둡니다.', word: '기적적', options: ['평범한', '도저히 일어날 수 없을 것 같은 놀라운', '슬픈', '느린'], answer: 1, difficulty: 'kpdh' },
 ]
