@@ -57,6 +57,13 @@ const difficulties: { value: Difficulty; label: string; desc: string; selected: 
     selected: 'bg-indigo-100 border-indigo-500 text-indigo-800',
     idle: 'bg-white border-gray-200 text-gray-500',
   },
+  {
+    value: 'kpdh',
+    label: '데몬헌터',
+    desc: 'K-Pop',
+    selected: 'bg-pink-100 border-pink-500 text-pink-800',
+    idle: 'bg-white border-gray-200 text-gray-500',
+  },
 ]
 
 export default function StartScreen({ onStart, onTeacher }: Props) {

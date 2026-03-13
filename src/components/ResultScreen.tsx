@@ -23,6 +23,7 @@ const DIFFICULTY_LABEL: Record<Difficulty, string> = {
   math: '수학',
   proverb: '속담',
   engproverb: '영어속담',
+  kpdh: '데몬헌터',
 }
 
 const GRADE_INFO = {
