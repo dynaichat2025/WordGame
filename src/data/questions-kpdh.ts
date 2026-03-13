@@ -72,4 +72,17 @@ export const kpdhQuestions: Question[] = [
   { id: 1768, sentence: '미라는 전통 무용과 현대 춤을 융합한 독특한 안무를 만듭니다.', word: '융합', options: ['나누는 것', '서로 다른 것을 합쳐 새로운 것을 만드는 것', '없애는 것', '복사하는 것'], answer: 1, difficulty: 'kpdh' },
   { id: 1769, sentence: '셀린은 과거의 전투에서 입은 부상 때문에 은퇴할 수밖에 없었습니다.', word: '부상', options: ['선물', '싸움이나 사고로 몸을 다치는 것', '승리', '기쁜 일'], answer: 1, difficulty: 'kpdh' },
   { id: 1770, sentence: '헌트릭스는 결국 단결하여 귀마를 물리치는 데 성공합니다.', word: '단결', options: ['혼자 행동하는 것', '마음과 힘을 하나로 모으는 것', '싸우는 것', '포기하는 것'], answer: 1, difficulty: 'kpdh' },
+
+  // 추가 문제 2
+  { id: 1771, sentence: '사자 보이즈는 무대 위에서 매혹적인 공연으로 관객을 사로잡았습니다.', word: '매혹적', options: ['지루한', '마음을 홀리듯 끌어당기는', '무서운', '시끄러운'], answer: 1, difficulty: 'kpdh' },
+  { id: 1772, sentence: '헌트릭스의 음악에는 악마를 퇴치하는 신비한 힘이 담겨 있습니다.', word: '퇴치', options: ['도와주는 것', '물리쳐서 쫓아내는 것', '초대하는 것', '따라가는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1773, sentence: '귀마는 인간 세계를 지배하려는 음모를 오랫동안 꾸며왔습니다.', word: '음모', options: ['좋은 계획', '나쁜 일을 몰래 꾸미는 것', '음악 연습', '요리법'], answer: 1, difficulty: 'kpdh' },
+  { id: 1774, sentence: '루미는 셀린에게서 전수받은 능력으로 혼문을 지킵니다.', word: '전수', options: ['빼앗는 것', '기술이나 지식을 가르쳐 넘겨주는 것', '숨기는 것', '잊어버리는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1775, sentence: '조이의 랩 가사에는 자신의 경험과 감정이 솔직하게 담겨 있습니다.', word: '솔직하다', options: ['거짓말하다', '숨김없이 있는 그대로 말하다', '조용하다', '화내다'], answer: 1, difficulty: 'kpdh' },
+  { id: 1776, sentence: '까치는 한국 전통에서 좋은 소식을 전해주는 길조로 알려져 있습니다.', word: '길조', options: ['나쁜 징조', '좋은 일이 생길 조짐', '새의 이름', '노래 제목'], answer: 1, difficulty: 'kpdh' },
+  { id: 1777, sentence: '헌트릭스는 연습생 시절부터 혹독한 훈련을 견뎌냈습니다.', word: '혹독하다', options: ['쉽고 편하다', '매우 모질고 심하다', '즐겁다', '따뜻하다'], answer: 1, difficulty: 'kpdh' },
+  { id: 1778, sentence: '사자 보이즈의 인기가 치솟으면서 혼문이 점점 약해졌습니다.', word: '치솟다', options: ['내려가다', '갑자기 세차게 올라가다', '멈추다', '천천히 움직이다'], answer: 1, difficulty: 'kpdh' },
+  { id: 1779, sentence: '한국의 탈춤은 탈을 쓰고 추는 전통 가면극입니다.', word: '탈춤', options: ['현대 무용', '탈을 쓰고 추는 전통 가면극', '발레', '힙합 댄스'], answer: 1, difficulty: 'kpdh' },
+  { id: 1780, sentence: '바비는 헌트릭스의 매니저로 멤버들을 헌신적으로 돌봅니다.', word: '헌신적', options: ['이기적인', '자기를 돌보지 않고 온 힘을 다하는', '게으른', '무관심한'], answer: 1, difficulty: 'kpdh' },
+  { id: 1781, sentence: '힐러 한은 독특한 방법으로 상처를 치유하는 의사입니다.', word: '치유', options: ['아프게 하는 것', '병이나 상처를 낫게 하는 것', '무시하는 것', '숨기는 것'], answer: 1, difficulty: 'kpdh' },
 ]
