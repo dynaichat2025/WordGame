@@ -3,7 +3,7 @@ import type { Student, PlayerRecord, Difficulty } from '../types'
 import { getPoolForDifficulty, shuffle } from './questions'
 
 export async function loadStudents(): Promise<Student[]> {
-  const { data } = await supabase.from('students').select('*').order('name')
+  const { data } = await supabase.from('students').select('id,name,class,pin').order('name')
   return (data ?? []).map(r => ({ id: r.id, name: r.name, class: r.class, pin: r.pin }))
 }
 
@@ -29,16 +29,25 @@ export async function saveGameRecord(record: PlayerRecord): Promise<number | nul
     })
     .select('id')
     .single()
+  // 새 기록 저장 시 리더보드 캐시 무효화
+  leaderboardCache = null
   return data?.id ?? null
 }
 
+// --- 리더보드 인메모리 캐시 (30초 TTL) ---
+let leaderboardCache: { data: PlayerRecord[]; timestamp: number } | null = null
+const LEADERBOARD_TTL = 30_000
+
 export async function loadLeaderboard(): Promise<PlayerRecord[]> {
+  if (leaderboardCache && Date.now() - leaderboardCache.timestamp < LEADERBOARD_TTL) {
+    return leaderboardCache.data
+  }
   const { data } = await supabase
     .from('game_records')
-    .select('*')
+    .select('id,student_id,nickname,score,correct,total,difficulty,date')
     .order('score', { ascending: false })
     .limit(10)
-  return (data ?? []).map(r => ({
+  const records = (data ?? []).map(r => ({
     studentId: r.student_id,
     nickname: r.nickname,
     score: r.score,
@@ -48,12 +57,14 @@ export async function loadLeaderboard(): Promise<PlayerRecord[]> {
     date: r.date,
     _id: r.id,
   }))
+  leaderboardCache = { data: records, timestamp: Date.now() }
+  return records
 }
 
 export async function loadAllRecords(): Promise<PlayerRecord[]> {
   const { data } = await supabase
     .from('game_records')
-    .select('*')
+    .select('id,student_id,nickname,score,correct,total,difficulty,date')
     .order('created_at', { ascending: false })
   return (data ?? []).map(r => ({
     studentId: r.student_id,
@@ -95,8 +106,10 @@ export async function updateMastery(
 }
 
 export async function getQuestionsForStudent(difficulty: Difficulty, studentId: string, count = 10) {
-  const pool = getPoolForDifficulty(difficulty)
-  const masteredIds = await loadMastery(studentId, difficulty)
+  const [pool, masteredIds] = await Promise.all([
+    getPoolForDifficulty(difficulty),
+    loadMastery(studentId, difficulty),
+  ])
   const unmastered = pool.filter(q => !masteredIds.has(q.id))
 
   if (unmastered.length === 0) {

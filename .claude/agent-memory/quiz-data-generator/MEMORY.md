@@ -1,12 +1,20 @@
 # Quiz Data Generator Memory
 
-## Current State of questions.ts
-- Total questions: 1100 (1070 previous + 30 added 2026-03-06)
-- Last id used: 1100
-- Per-difficulty counts:
+## Current State of questions.ts / questions-daejanggeum.ts
+- questions.ts total: 1204 (last id 1204, unchanged)
+- questions-daejanggeum.ts last id: 1234 (30 questions added 2026-03-08)
+- daejanggeum total: 134 questions (ids 1101-1234)
+- Per-difficulty counts in questions.ts:
   - easy: 368 (ids include 1071-1080)
   - normal: 368 (ids include 1081-1090)
   - hard: 364 (ids include 1091-1100)
+  - daejanggeum: 104 (ids 1101-1204, in questions.ts)
+
+## File Structure - questions-daejanggeum.ts
+- Path: /Volumes/AppDrive/WIP/Claude Code/WordGame/src/data/questions-daejanggeum.ts
+- Import: `import type { Question } from '../types'`
+- Export: `export const daejanggeumQuestions: Question[] = [...]`
+- Separate from questions.ts — append here only, do NOT touch questions.ts for daejanggeum
 
 ## File Structure
 - Path: /Volumes/AppDrive/WIP/Claude Code/WordGame/src/data/questions.ts
@@ -29,6 +37,12 @@ See words-used.md for full list. Recent additions (ids 921-1100):
 - normal (1081-1090): 끈기있게, 사려깊은, 협력하여, 배려하는, 균형잡힌, 도전하는, 지속적인, 소통하며, 주도적인, 근면한
 - hard (1021-1070): 굽히지, 부조리, 퇴색하지, 내면, 소용돌이, 둔감했다, 간결하면서도, 사색, 황폐해졌다, 굴복하지, 수난, 침묵하는, 번영, 정체성, 공감하게, 불의, 승화시켰다, 성찰하고, 해체시켰다, 모순, 울분, 유한성, 탐욕, 허위, 역경을, 여운, 안주하지, 과도기, 보장하지, 강인해졌다, 내밀한, 안위, 비애, 귀감, 애도했다, 봉건, 자존감, 저력, 절감했다, 항거했다, 암울함, 역설한다, 반영하는, 수호했다, 진보, 비극, 경제성, 이상, 근원적인, 굳건해졌다
 - hard (1091-1100): 편협한, 자성, 포용하는, 명멸하는, 자괴감, 응축된, 갈등하는, 비루한, 초월한, 결연히
+- daejanggeum (1101-1120): 수라간, 상궁, 의녀, 어의, 탕약, 수라상, 약재, 처방, 나인, 연회, 침술, 진상, 구중궁궐, 식의, 곤룡포, 숙수, 간택, 어선, 궁녀, 반상
+- daejanggeum (1121-1140): 내의원, 혜민서, 본초, 뜸, 경혈, 구절판, 신선로, 약식, 수정과, 식혜, 내명부, 중전, 세자, 내시, 소주방, 침방, 사약, 귀양, 직첩, 한과
+- daejanggeum (1141-1170): 전복죽, 잡채, 떡국, 전골, 갈비찜, 맥박, 음양, 한열, 보약, 독초, 해독, 오장육부, 기혈, 사상체질, 외명부, 대전, 동궁, 후원, 상의원, 규장각, 사헌부, 의금부, 영의정, 승지, 사관, 암행어사, 어명, 옥새, 어진, 종묘제례
+- daejanggeum (1171-1184, 등장인물): 서장금, 민정호, 최금영, 한상궁, 최상궁, 중종, 장덕, 연생, 오겸호, 신비, 장녹수, 정상궁, 이영로, 신익필
+- daejanggeum (1185-1204, 배경지식): 수라, 내전, 편전, 모함, 누명, 복수, 충절, 절개, 사가, 출궁, 삼강오륜, 칠거지악, 적서차별, 조회, 오행, 식치, 약전, 약령시, 탕관, 별감
+- daejanggeum (1205-1234, 드라마 배경): 하례, 진찬, 책봉, 수렴청정, 국문, 국상, 어가, 대령, 하직, 국문장, 고신, 삼족, 유배, 참형, 장형, 진맥, 침구, 사혈, 해열, 금기, 의서, 동의보감, 포, 젓갈, 장, 약과, 엿, 죽, 전, 나물
 
 ## Quality Notes
 - answer distribution: aim for even spread of 0,1,2,3 across questions

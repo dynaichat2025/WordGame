@@ -1,11 +1,12 @@
-import { useState } from 'react'
+import { useState, useCallback, lazy, Suspense } from 'react'
 import type { Difficulty, Question, Screen } from './types'
 import { getQuestions } from './data/questions'
 import { getQuestionsForStudent, updateMastery } from './data/students'
 import StartScreen from './components/StartScreen'
 import QuizScreen from './components/QuizScreen'
-import ResultScreen from './components/ResultScreen'
-import TeacherScreen from './components/TeacherScreen'
+
+const ResultScreen = lazy(() => import('./components/ResultScreen'))
+const TeacherScreen = lazy(() => import('./components/TeacherScreen'))
 
 export interface AnswerRecord {
   question: Question
@@ -35,15 +36,21 @@ const initialState: GameState = {
   answers: [],
 }
 
+const SuspenseFallback = (
+  <div className="min-h-screen bg-gradient-to-b from-sky-400 to-blue-600 flex items-center justify-center">
+    <div className="text-white text-xl font-bold">로딩 중...</div>
+  </div>
+)
+
 export default function App() {
   const [state, setState] = useState<GameState>(initialState)
   const [loading, setLoading] = useState(false)
 
-  const handleStart = async (nickname: string, difficulty: Difficulty, studentId?: string) => {
+  const handleStart = useCallback(async (nickname: string, difficulty: Difficulty, studentId?: string) => {
     setLoading(true)
-    const questions = studentId
-      ? await getQuestionsForStudent(difficulty, studentId)
-      : getQuestions(difficulty, 10)
+    const questions = await (studentId
+      ? getQuestionsForStudent(difficulty, studentId)
+      : getQuestions(difficulty, 10))
     setLoading(false)
     setState({
       screen: 'quiz',
@@ -55,35 +62,42 @@ export default function App() {
       correct: 0,
       answers: [],
     })
-  }
+  }, [])
 
-  const handleFinish = (score: number, correct: number, answers: AnswerRecord[]) => {
-    if (state.studentId) {
-      updateMastery(state.studentId, state.difficulty, answers.map(a => ({
-        questionId: a.question.id,
-        isCorrect: a.isCorrect,
-      })))
-    }
-    setState(s => ({ ...s, screen: 'result', score, correct, answers }))
-  }
+  const handleFinish = useCallback((score: number, correct: number, answers: AnswerRecord[]) => {
+    setState(s => {
+      if (s.studentId) {
+        updateMastery(s.studentId, s.difficulty, answers.map(a => ({
+          questionId: a.question.id,
+          isCorrect: a.isCorrect,
+        })))
+      }
+      return { ...s, screen: 'result' as const, score, correct, answers }
+    })
+  }, [])
 
-  const handleRetry = async () => {
+  const handleRetry = useCallback(async () => {
     setLoading(true)
-    const questions = state.studentId
-      ? await getQuestionsForStudent(state.difficulty, state.studentId)
-      : getQuestions(state.difficulty, 10)
-    setLoading(false)
-    setState(s => ({
-      ...s,
-      screen: 'quiz',
-      questions,
-      score: 0,
-      correct: 0,
-      answers: [],
-    }))
-  }
+    setState(s => {
+      const fetchQuestions = s.studentId
+        ? getQuestionsForStudent(s.difficulty, s.studentId)
+        : getQuestions(s.difficulty, 10)
+      fetchQuestions.then(questions => {
+        setLoading(false)
+        setState(prev => ({
+          ...prev,
+          screen: 'quiz',
+          questions,
+          score: 0,
+          correct: 0,
+          answers: [],
+        }))
+      })
+      return s
+    })
+  }, [])
 
-  const handleHome = () => setState(initialState)
+  const handleHome = useCallback(() => setState(initialState), [])
 
   if (loading) return (
     <div className="min-h-screen bg-gradient-to-b from-sky-400 to-blue-600 flex items-center justify-center">
@@ -91,7 +105,11 @@ export default function App() {
     </div>
   )
 
-  if (state.screen === 'teacher') return <TeacherScreen onClose={handleHome} />
+  if (state.screen === 'teacher') return (
+    <Suspense fallback={SuspenseFallback}>
+      <TeacherScreen onClose={handleHome} />
+    </Suspense>
+  )
 
   if (state.screen === 'start') return <StartScreen onStart={handleStart} onTeacher={() => setState(s => ({ ...s, screen: 'teacher' }))} />
 
@@ -106,16 +124,18 @@ export default function App() {
   }
 
   return (
-    <ResultScreen
-      nickname={state.nickname}
-      studentId={state.studentId}
-      score={state.score}
-      correct={state.correct}
-      total={state.questions.length}
-      difficulty={state.difficulty}
-      answers={state.answers}
-      onRetry={handleRetry}
-      onHome={handleHome}
-    />
+    <Suspense fallback={SuspenseFallback}>
+      <ResultScreen
+        nickname={state.nickname}
+        studentId={state.studentId}
+        score={state.score}
+        correct={state.correct}
+        total={state.questions.length}
+        difficulty={state.difficulty}
+        answers={state.answers}
+        onRetry={handleRetry}
+        onHome={handleHome}
+      />
+    </Suspense>
   )
 }

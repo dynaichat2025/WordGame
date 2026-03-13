@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { Difficulty, PlayerRecord } from '../types'
 import type { AnswerRecord } from '../App'
 import { saveGameRecord, loadLeaderboard } from '../data/students'
@@ -83,8 +83,8 @@ export default function ResultScreen({ nickname, studentId, score, correct, tota
   const grade = accuracy >= 90 ? 'S' : accuracy >= 70 ? 'A' : accuracy >= 50 ? 'B' : 'C'
   const gradeInfo = GRADE_INFO[grade]
 
-  const wrongAnswers = answers.filter(a => !a.isCorrect)
-  const correctAnswers = answers.filter(a => a.isCorrect)
+  const wrongAnswers = useMemo(() => answers.filter(a => !a.isCorrect), [answers])
+  const correctAnswers = useMemo(() => answers.filter(a => a.isCorrect), [answers])
 
   // 점수 카운트업 애니메이션
   useEffect(() => {
