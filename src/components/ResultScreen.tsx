@@ -16,9 +16,9 @@ interface Props {
 }
 
 const DIFFICULTY_LABEL: Record<Difficulty, string> = {
-  easy: 'Easy',
-  normal: 'Normal',
-  hard: 'Hard',
+  easy: '쉬움',
+  normal: '보통',
+  hard: '어려움',
   daejanggeum: '대장금',
   math: '수학',
   proverb: '속담',

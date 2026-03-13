@@ -10,21 +10,21 @@ interface Props {
 const difficulties: { value: Difficulty; label: string; desc: string; selected: string; idle: string }[] = [
   {
     value: 'easy',
-    label: 'Easy',
+    label: '쉬움',
     desc: '1~2학년',
     selected: 'bg-green-100 border-green-500 text-green-800',
     idle: 'bg-white border-gray-200 text-gray-500',
   },
   {
     value: 'normal',
-    label: 'Normal',
+    label: '보통',
     desc: '3~4학년',
     selected: 'bg-yellow-100 border-yellow-500 text-yellow-800',
     idle: 'bg-white border-gray-200 text-gray-500',
   },
   {
     value: 'hard',
-    label: 'Hard',
+    label: '어려움',
     desc: '5학년',
     selected: 'bg-red-100 border-red-500 text-red-800',
     idle: 'bg-white border-gray-200 text-gray-500',
