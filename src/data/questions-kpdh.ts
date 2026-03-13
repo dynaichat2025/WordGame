@@ -85,4 +85,18 @@ export const kpdhQuestions: Question[] = [
   { id: 1779, sentence: '한국의 탈춤은 탈을 쓰고 추는 전통 가면극입니다.', word: '탈춤', options: ['현대 무용', '탈을 쓰고 추는 전통 가면극', '발레', '힙합 댄스'], answer: 1, difficulty: 'kpdh' },
   { id: 1780, sentence: '바비는 헌트릭스의 매니저로 멤버들을 헌신적으로 돌봅니다.', word: '헌신적', options: ['이기적인', '자기를 돌보지 않고 온 힘을 다하는', '게으른', '무관심한'], answer: 1, difficulty: 'kpdh' },
   { id: 1781, sentence: '힐러 한은 독특한 방법으로 상처를 치유하는 의사입니다.', word: '치유', options: ['아프게 하는 것', '병이나 상처를 낫게 하는 것', '무시하는 것', '숨기는 것'], answer: 1, difficulty: 'kpdh' },
+
+  // 추가 문제 3
+  { id: 1782, sentence: '헌트릭스는 데뷔 무대에서 강렬한 인상을 남겼습니다.', word: '데뷔', options: ['마지막 공연', '처음으로 무대에 서는 것', '연습하는 것', '쉬는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1783, sentence: '귀마의 저주로 혼문에 균열이 생기기 시작했습니다.', word: '균열', options: ['더 단단해지는 것', '갈라져서 틈이 생기는 것', '빛나는 것', '커지는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1784, sentence: '루미는 두려움을 극복하고 동료들을 이끌었습니다.', word: '극복', options: ['피하는 것', '어려움을 이겨내는 것', '포기하는 것', '숨는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1785, sentence: '진우는 겉으로는 상냥하지만 속마음은 사악한 악마입니다.', word: '사악하다', options: ['착하다', '매우 악하고 나쁘다', '슬프다', '부끄럽다'], answer: 1, difficulty: 'kpdh' },
+  { id: 1786, sentence: '한국의 전통 부채춤은 화려한 부채를 들고 추는 아름다운 춤입니다.', word: '부채춤', options: ['칼을 든 춤', '부채를 들고 추는 전통 춤', '북을 치는 춤', '혼자 추는 춤'], answer: 1, difficulty: 'kpdh' },
+  { id: 1787, sentence: '사자 보이즈는 팬들의 열광적인 반응을 이용해 에너지를 흡수합니다.', word: '열광적', options: ['무관심한', '미치도록 좋아하며 흥분한', '조용한', '슬픈'], answer: 1, difficulty: 'kpdh' },
+  { id: 1788, sentence: '헌트릭스 멤버들은 각자의 재능을 발휘하여 팀에 기여합니다.', word: '발휘', options: ['숨기는 것', '가지고 있는 능력을 나타내는 것', '잃어버리는 것', '빌리는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1789, sentence: '한국에서 용은 비를 내리게 하는 신성한 동물로 여겨집니다.', word: '신성하다', options: ['무섭다', '거룩하고 신처럼 존귀하다', '작다', '슬프다'], answer: 1, difficulty: 'kpdh' },
+  { id: 1790, sentence: '귀마는 부하들에게 절대 복종을 요구하는 잔인한 왕입니다.', word: '복종', options: ['반항하는 것', '시키는 대로 따르는 것', '도망치는 것', '무시하는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1791, sentence: '미라는 공연 중 즉흥적으로 안무를 바꿔서 관객을 놀라게 했습니다.', word: '즉흥적', options: ['오래 준비한', '미리 계획하지 않고 그 자리에서 하는', '느린', '반복적인'], answer: 1, difficulty: 'kpdh' },
+  { id: 1792, sentence: '헌트릭스의 노래는 사람들에게 위로와 희망을 전해줍니다.', word: '위로', options: ['비난', '슬프거나 힘든 사람을 따뜻하게 달래주는 것', '경쟁', '무관심'], answer: 1, difficulty: 'kpdh' },
+  { id: 1793, sentence: '한국의 장승은 마을 입구에 세워 나쁜 귀신을 막아주는 수호신입니다.', word: '장승', options: ['다리', '마을을 지키는 나무나 돌 기둥 형태의 수호신', '우물', '지붕'], answer: 1, difficulty: 'kpdh' },
 ]
