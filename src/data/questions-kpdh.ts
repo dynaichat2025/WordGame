@@ -125,4 +125,17 @@ export const kpdhQuestions: Question[] = [
   { id: 1828, sentence: '영화에서 저승사자는 검은 한복에 갓을 쓴 모습으로 등장합니다.', word: '등장', options: ['사라지는 것', '무대나 장면에 나타나는 것', '숨는 것', '잠자는 것'], answer: 1, difficulty: 'kpdh' },
   { id: 1829, sentence: '헌트릭스의 조이는 그룹에서 막내이자 메인 래퍼를 맡고 있습니다.', word: '맡다', options: ['거절하는 것', '어떤 역할이나 일을 책임지는 것', '버리는 것', '피하는 것'], answer: 1, difficulty: 'kpdh' },
   { id: 1830, sentence: '이 영화는 소니 픽처스 애니메이션이 제작한 한국 문화 기반의 작품입니다.', word: '기반', options: ['지붕', '바탕이 되는 토대', '장식', '결말'], answer: 1, difficulty: 'kpdh' },
+
+  // Trivia 문제 2
+  { id: 1831, sentence: '사자 보이즈는 총 다섯 명의 악마가 변신한 보이그룹입니다.', word: '변신', options: ['잠드는 것', '모습이나 형태가 바뀌는 것', '노래하는 것', '먹는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1832, sentence: '영화에서 헌트릭스와 사자 보이즈의 대결은 음악 차트 경쟁으로 펼쳐집니다.', word: '경쟁', options: ['협력하는 것', '서로 이기려고 겨루는 것', '쉬는 것', '구경하는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1833, sentence: '케이팝 데몬 헌터스의 사운드트랙은 빌보드 차트 1위를 기록했습니다.', word: '사운드트랙', options: ['대본', '영화에 사용된 음악 모음', '포스터', '자막'], answer: 1, difficulty: 'kpdh' },
+  { id: 1834, sentence: '영화의 감독 매기 강은 한국계 미국인으로 한국 문화에 대한 애정을 담았습니다.', word: '애정', options: ['미움', '사랑하고 아끼는 마음', '무관심', '두려움'], answer: 1, difficulty: 'kpdh' },
+  { id: 1835, sentence: '작호도에서 호랑이는 한국 전통에서 악귀를 쫓는 벽사의 상징입니다.', word: '벽사', options: ['벽에 거는 그림', '나쁜 귀신이나 재앙을 물리치는 것', '벽돌 쌓기', '벽을 칠하는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1836, sentence: '영화에서 노리개는 데몬 헌터의 힘을 상징하는 중요한 소품입니다.', word: '소품', options: ['큰 건물', '연극이나 영화에서 쓰는 작은 물건', '음식', '무기'], answer: 1, difficulty: 'kpdh' },
+  { id: 1837, sentence: '케이팝 데몬 헌터스는 넷플릭스 역대 가장 많이 본 영화 1위를 달성했습니다.', word: '달성', options: ['실패하는 것', '목표한 것을 이루어 내는 것', '포기하는 것', '시작하는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1838, sentence: '영화의 배경은 현대 한국의 서울로, 전통과 현대가 공존하는 도시입니다.', word: '공존', options: ['하나만 있는 것', '함께 어울려 존재하는 것', '사라지는 것', '싸우는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1839, sentence: '헌트릭스의 매니저 바비는 멤버들의 정체를 비밀로 유지하려 애씁니다.', word: '유지', options: ['버리는 것', '어떤 상태를 계속 지켜나가는 것', '바꾸는 것', '잊어버리는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1840, sentence: '영화에서 삼한습유라는 고전 소설이 귀마 캐릭터의 모티브가 되었습니다.', word: '모티브', options: ['결말', '창작의 동기가 된 소재나 아이디어', '배경 음악', '의상'], answer: 1, difficulty: 'kpdh' },
+  { id: 1841, sentence: '대대로 세 명의 헌터가 한 조를 이루어 혼문을 지켜온 것이 전통입니다.', word: '대대로', options: ['한 번만', '여러 세대에 걸쳐 계속', '갑자기', '가끔'], answer: 1, difficulty: 'kpdh' },
 ]
