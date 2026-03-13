@@ -1,4 +1,4 @@
-export type Difficulty = 'easy' | 'normal' | 'hard' | 'daejanggeum' | 'math'
+export type Difficulty = 'easy' | 'normal' | 'hard' | 'daejanggeum' | 'math' | 'proverb'
 
 export interface Question {
   id: number
