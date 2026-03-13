@@ -113,4 +113,16 @@ export const kpdhQuestions: Question[] = [
   { id: 1810, sentence: '루미와 진우는 최종 대결에서 운명적인 맞대결을 펼칩니다.', word: '운명적', options: ['우연한', '피할 수 없이 정해진 듯한', '즐거운', '간단한'], answer: 1, difficulty: 'kpdh' },
   { id: 1811, sentence: '헌트릭스의 세 멤버가 마음을 하나로 모아 부르는 노래가 각성의 열쇠입니다.', word: '각성', options: ['잠드는 것', '깨달아 눈을 뜨는 것', '잊어버리는 것', '쉬는 것'], answer: 1, difficulty: 'kpdh' },
   { id: 1812, sentence: '결국 헌트릭스는 셀린의 가르침을 떠올리며 기적적인 승리를 거둡니다.', word: '기적적', options: ['평범한', '도저히 일어날 수 없을 것 같은 놀라운', '슬픈', '느린'], answer: 1, difficulty: 'kpdh' },
+
+  // Trivia 문제
+  { id: 1821, sentence: '케이팝 데몬 헌터스에서 헌트릭스의 멤버는 몇 명인가요?', word: '헌트릭스', options: ['2명', '3명', '4명', '5명'], answer: 1, difficulty: 'kpdh' },
+  { id: 1822, sentence: '사자 보이즈의 "사자"에는 두 가지 뜻이 숨겨져 있습니다.', word: '사자', options: ['왕과 신하', '심부름꾼(使者)과 동물 사자(獅子)', '형과 동생', '선생님과 학생'], answer: 1, difficulty: 'kpdh' },
+  { id: 1823, sentence: '케이팝 데몬 헌터스는 2025년에 넷플릭스에서 공개된 애니메이션 영화입니다.', word: '애니메이션', options: ['실사 영화', '그림을 움직여 만든 영화', '다큐멘터리', '뮤지컬 공연'], answer: 1, difficulty: 'kpdh' },
+  { id: 1824, sentence: '영화에서 데몬 헌터의 힘은 한국 전통 무당의 굿에서 영감을 받았습니다.', word: '영감', options: ['나이 든 사람', '창작에 도움이 되는 좋은 생각이나 자극', '그림자', '소리'], answer: 1, difficulty: 'kpdh' },
+  { id: 1825, sentence: '귀마라는 이름은 마귀를 거꾸로 뒤집어 만든 이름입니다.', word: '뒤집다', options: ['그대로 두는 것', '앞뒤나 위아래를 반대로 바꾸는 것', '크게 만드는 것', '작게 만드는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1826, sentence: '영화 속에서 헌트릭스의 노래 순위가 올라가면 혼문이 강해지고, 내려가면 약해집니다.', word: '순위', options: ['노래 가사', '높고 낮음의 차례, 등수', '노래 제목', '악기 종류'], answer: 1, difficulty: 'kpdh' },
+  { id: 1827, sentence: '케이팝 데몬 헌터스의 프롤로그에는 아리랑이 사용되었습니다.', word: '프롤로그', options: ['마지막 장면', '이야기의 시작 부분, 서막', '중간 장면', '엔딩 크레딧'], answer: 1, difficulty: 'kpdh' },
+  { id: 1828, sentence: '영화에서 저승사자는 검은 한복에 갓을 쓴 모습으로 등장합니다.', word: '등장', options: ['사라지는 것', '무대나 장면에 나타나는 것', '숨는 것', '잠자는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1829, sentence: '헌트릭스의 조이는 그룹에서 막내이자 메인 래퍼를 맡고 있습니다.', word: '맡다', options: ['거절하는 것', '어떤 역할이나 일을 책임지는 것', '버리는 것', '피하는 것'], answer: 1, difficulty: 'kpdh' },
+  { id: 1830, sentence: '이 영화는 소니 픽처스 애니메이션이 제작한 한국 문화 기반의 작품입니다.', word: '기반', options: ['지붕', '바탕이 되는 토대', '장식', '결말'], answer: 1, difficulty: 'kpdh' },
 ]
