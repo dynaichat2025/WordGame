@@ -1,5 +1,6 @@
 import { supabase } from '../lib/supabase'
 import type { Student, PlayerRecord, Difficulty } from '../types'
+import type { AnswerRecord } from '../App'
 import { getPoolForDifficulty, shuffle } from './questions'
 
 export async function loadStudents(): Promise<Student[]> {
@@ -15,7 +16,16 @@ export async function removeStudent(id: string): Promise<void> {
   await supabase.from('students').delete().eq('id', id)
 }
 
-export async function saveGameRecord(record: PlayerRecord): Promise<number | null> {
+export async function saveGameRecord(record: PlayerRecord, answers?: AnswerRecord[]): Promise<number | null> {
+  const answersJson = answers?.map(a => ({
+    questionId: a.question.id,
+    word: a.question.word,
+    sentence: a.question.sentence,
+    options: a.question.options,
+    answer: a.question.answer,
+    selected: a.selected,
+    isCorrect: a.isCorrect,
+  }))
   const { data } = await supabase
     .from('game_records')
     .insert({
@@ -26,12 +36,31 @@ export async function saveGameRecord(record: PlayerRecord): Promise<number | nul
       total: record.total,
       difficulty: record.difficulty,
       date: record.date,
+      answers: answersJson ?? null,
     })
     .select('id')
     .single()
   // 새 기록 저장 시 리더보드 캐시 무효화
   leaderboardCache = null
   return data?.id ?? null
+}
+
+export async function loadRecordAnswers(recordId: number): Promise<AnswerRecord[] | null> {
+  const { data } = await supabase
+    .from('game_records')
+    .select('answers')
+    .eq('id', recordId)
+    .single()
+  if (!data?.answers) return null
+  return (data.answers as Array<{
+    questionId: number; word: string; sentence: string;
+    options: [string, string, string, string]; answer: 0 | 1 | 2 | 3;
+    selected: number | 'timeout'; isCorrect: boolean
+  }>).map(a => ({
+    question: { id: a.questionId, word: a.word, sentence: a.sentence, options: a.options, answer: a.answer, difficulty: 'easy' as Difficulty },
+    selected: a.selected,
+    isCorrect: a.isCorrect,
+  }))
 }
 
 // --- 리더보드 인메모리 캐시 (30초 TTL) ---

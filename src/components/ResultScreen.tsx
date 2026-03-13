@@ -109,7 +109,7 @@ export default function ResultScreen({ nickname, studentId, score, correct, tota
       nickname, score, correct, total, difficulty,
       date: new Date().toLocaleDateString('ko-KR'),
     }
-    saveGameRecord(record).then(insertedId => {
+    saveGameRecord(record, answers).then(insertedId => {
       return loadLeaderboard().then(top10 => {
         setRecords(top10)
         const rank = insertedId !== null ? top10.findIndex(r => r._id === insertedId) : -1

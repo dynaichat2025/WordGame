@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import type { Student, PlayerRecord } from '../types'
-import { loadStudents, addStudent, removeStudent, loadAllRecords, calcStats } from '../data/students'
+import type { AnswerRecord } from '../App'
+import { loadStudents, addStudent, removeStudent, loadAllRecords, calcStats, loadRecordAnswers } from '../data/students'
 
 const DIFFICULTY_LABEL = { easy: 'Easy', normal: 'Normal', hard: 'Hard', daejanggeum: '대장금' } as const
 const GRADE_COLOR = { S: 'text-yellow-500', A: 'text-blue-500', B: 'text-green-500', C: 'text-gray-400' }
@@ -8,6 +9,44 @@ const GRADE_COLOR = { S: 'text-yellow-500', A: 'text-blue-500', B: 'text-green-5
 function gradeOf(correct: number, total: number) {
   const pct = (correct / total) * 100
   return pct >= 90 ? 'S' : pct >= 70 ? 'A' : pct >= 50 ? 'B' : 'C'
+}
+
+function NoteCard({ item }: { item: AnswerRecord }) {
+  const { question, selected, isCorrect } = item
+  const selectedLabel =
+    selected === 'timeout'
+      ? '⏰ 시간 초과'
+      : `${question.options[selected as number]}`
+
+  return (
+    <div className={`rounded-2xl border-2 p-4 mb-3 ${isCorrect ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}`}>
+      <p className="text-sm text-gray-500 mb-1">문장</p>
+      <p className="text-base font-medium text-gray-800 mb-3 leading-relaxed">
+        {question.sentence.split(question.word).map((part, i, arr) => (
+          <span key={i}>
+            {part}
+            {i < arr.length - 1 && (
+              <span className={`font-bold underline underline-offset-2 ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>
+                {question.word}
+              </span>
+            )}
+          </span>
+        ))}
+      </p>
+      <div className="flex flex-col gap-1 text-sm">
+        <div className="flex gap-2">
+          <span className="text-green-600 font-bold w-12 shrink-0">정답</span>
+          <span className="text-gray-800">{question.options[question.answer]}</span>
+        </div>
+        {!isCorrect && (
+          <div className="flex gap-2">
+            <span className="text-red-500 font-bold w-12 shrink-0">선택</span>
+            <span className="text-gray-600">{selectedLabel}</span>
+          </div>
+        )}
+      </div>
+    </div>
+  )
 }
 
 interface Props {
@@ -29,6 +68,10 @@ export default function TeacherScreen({ onClose }: Props) {
   const [newPin, setNewPin] = useState('')
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null)
+  const [detailRecord, setDetailRecord] = useState<PlayerRecord | null>(null)
+  const [detailAnswers, setDetailAnswers] = useState<AnswerRecord[] | null>(null)
+  const [detailLoading, setDetailLoading] = useState(false)
+  const [detailTab, setDetailTab] = useState<'wrong' | 'correct'>('wrong')
 
   useEffect(() => {
     if (!unlocked) return
@@ -72,6 +115,19 @@ export default function TeacherScreen({ onClose }: Props) {
   const studentRecords = (id: string) => allRecords.filter(r => r.studentId === id)
   const selectedStudent = students.find(s => s.id === selectedId)
   const selectedRecords = selectedId ? studentRecords(selectedId) : []
+
+  const handleRecordClick = async (record: PlayerRecord) => {
+    if (!record._id) return
+    setDetailRecord(record)
+    setDetailTab('wrong')
+    setDetailLoading(true)
+    const answers = await loadRecordAnswers(record._id)
+    setDetailAnswers(answers)
+    setDetailLoading(false)
+  }
+
+  const wrongAnswers = useMemo(() => detailAnswers?.filter(a => !a.isCorrect) ?? [], [detailAnswers])
+  const correctAnswers = useMemo(() => detailAnswers?.filter(a => a.isCorrect) ?? [], [detailAnswers])
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-500 to-indigo-700 flex items-center justify-center p-4">
@@ -246,6 +302,7 @@ export default function TeacherScreen({ onClose }: Props) {
                     {selectedStudent?.class ? ` (${selectedStudent.class}반)` : ''} 학습 기록
                     <span className="text-gray-400 font-normal ml-1">총 {selectedRecords.length}회</span>
                   </div>
+                  {!detailRecord ? (
                   <div className="max-h-64 overflow-y-auto flex flex-col gap-2 pr-1">
                     {selectedRecords.length === 0 ? (
                       <div className="text-center py-8 text-gray-400 text-sm">아직 게임 기록이 없어요.</div>
@@ -254,7 +311,11 @@ export default function TeacherScreen({ onClose }: Props) {
                         const grade = gradeOf(r.correct, r.total)
                         const accuracy = Math.round((r.correct / r.total) * 100)
                         return (
-                          <div key={i} className="flex items-center gap-3 bg-gray-50 rounded-xl px-3 py-2.5 border border-gray-100 text-sm">
+                          <button
+                            key={i}
+                            onClick={() => handleRecordClick(r)}
+                            className="flex items-center gap-3 bg-gray-50 rounded-xl px-3 py-2.5 border border-gray-100 hover:border-purple-300 hover:bg-purple-50 transition-all text-sm text-left w-full"
+                          >
                             <span className={`font-black text-lg w-5 shrink-0 ${GRADE_COLOR[grade]}`}>{grade}</span>
                             <div className="flex-1">
                               <div className="text-gray-700 font-medium">
@@ -264,11 +325,67 @@ export default function TeacherScreen({ onClose }: Props) {
                                 {DIFFICULTY_LABEL[r.difficulty]} · {r.date}
                               </div>
                             </div>
-                          </div>
+                            <span className="text-gray-300 text-lg">›</span>
+                          </button>
                         )
                       })
                     )}
                   </div>
+                  ) : (
+                  <>
+                    <button
+                      onClick={() => { setDetailRecord(null); setDetailAnswers(null) }}
+                      className="flex items-center gap-1 text-purple-600 text-sm font-semibold mb-3 hover:underline"
+                    >
+                      ‹ 기록 목록으로
+                    </button>
+                    <div className="font-bold text-gray-800 mb-3 text-sm">
+                      {detailRecord.score}점 · {detailRecord.correct}/{detailRecord.total}문제
+                      <span className="text-gray-400 font-normal ml-1">
+                        {DIFFICULTY_LABEL[detailRecord.difficulty]} · {detailRecord.date}
+                      </span>
+                    </div>
+                    {detailLoading ? (
+                      <div className="text-center py-8 text-gray-400 text-sm">불러오는 중...</div>
+                    ) : !detailAnswers ? (
+                      <div className="text-center py-8 text-gray-400 text-sm">이 기록에는 상세 답안 데이터가 없습니다.</div>
+                    ) : (
+                      <>
+                        <div className="flex gap-1 bg-gray-100 rounded-2xl p-1 mb-3">
+                          {([
+                            { key: 'wrong' as const, label: `오답노트 ${wrongAnswers.length}` },
+                            { key: 'correct' as const, label: `정답노트 ${correctAnswers.length}` },
+                          ]).map(t => (
+                            <button
+                              key={t.key}
+                              onClick={() => setDetailTab(t.key)}
+                              className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all ${
+                                detailTab === t.key ? 'bg-white text-purple-600 shadow-sm' : 'text-gray-400'
+                              }`}
+                            >
+                              {t.label}
+                            </button>
+                          ))}
+                        </div>
+                        <div className="max-h-60 overflow-y-auto pr-1">
+                          {detailTab === 'wrong' ? (
+                            wrongAnswers.length === 0 ? (
+                              <div className="text-center py-8 text-gray-400 text-sm">오답이 없어요! 완벽!</div>
+                            ) : (
+                              wrongAnswers.map((item, i) => <NoteCard key={i} item={item} />)
+                            )
+                          ) : (
+                            correctAnswers.length === 0 ? (
+                              <div className="text-center py-8 text-gray-400 text-sm">정답이 없어요.</div>
+                            ) : (
+                              correctAnswers.map((item, i) => <NoteCard key={i} item={item} />)
+                            )
+                          )}
+                        </div>
+                      </>
+                    )}
+                  </>
+                  )}
                 </>
               )
             )}
