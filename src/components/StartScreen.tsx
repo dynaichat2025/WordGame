@@ -66,15 +66,15 @@ const difficulties: { value: Difficulty; label: string; desc: string; selected: 
   },
   {
     value: 'uselem',
-    label: 'Elementary',
-    desc: '초등학교',
+    label: '초등영어',
+    desc: 'Elementary',
     selected: 'bg-teal-100 border-teal-500 text-teal-800',
     idle: 'bg-white border-gray-200 text-gray-500',
   },
   {
     value: 'usmiddle',
-    label: 'Middle',
-    desc: '중학교',
+    label: '중등영어',
+    desc: 'Middle',
     selected: 'bg-emerald-100 border-emerald-500 text-emerald-800',
     idle: 'bg-white border-gray-200 text-gray-500',
   },
@@ -187,7 +187,7 @@ export default function StartScreen({ onStart, onTeacher }: Props) {
         </div>
 
         <div className="mb-8">
-          <label className="block text-base font-semibold text-gray-600 mb-2">난이도</label>
+          <label className="block text-base font-semibold text-gray-600 mb-2">퀴즈 종류</label>
           <div className="grid grid-cols-4 gap-2">
             {difficulties.map(d => (
               <button
