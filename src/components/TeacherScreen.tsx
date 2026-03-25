@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
-import type { Student, PlayerRecord } from '../types'
+import type { Student, PlayerRecord, QuestionReport } from '../types'
 import type { AnswerRecord } from '../App'
-import { loadStudents, addStudent, removeStudent, loadAllRecords, calcStats, loadRecordAnswers } from '../data/students'
+import { loadStudents, addStudent, removeStudent, loadAllRecords, calcStats, loadRecordAnswers, loadReports, resolveReport } from '../data/students'
 
 const DIFFICULTY_LABEL = { easy: '쉬움', normal: '보통', hard: '어려움', daejanggeum: '대장금', math: '수학', proverb: '속담', engproverb: '영어속담', kpdh: '데몬헌터' } as const
 const GRADE_COLOR = { S: 'text-yellow-500', A: 'text-blue-500', B: 'text-green-500', C: 'text-gray-400' }
@@ -153,9 +153,10 @@ export default function TeacherScreen({ onClose }: Props) {
   const [pinInput, setPinInput] = useState('')
   const [pinError, setPinError] = useState(false)
 
-  const [tab, setTab] = useState<'students' | 'progress'>('students')
+  const [tab, setTab] = useState<'students' | 'progress' | 'reports'>('students')
   const [students, setStudents] = useState<Student[]>([])
   const [allRecords, setAllRecords] = useState<PlayerRecord[]>([])
+  const [reports, setReports] = useState<QuestionReport[]>([])
   const [dataLoading, setDataLoading] = useState(false)
 
   const [newName, setNewName] = useState('')
@@ -171,9 +172,10 @@ export default function TeacherScreen({ onClose }: Props) {
   useEffect(() => {
     if (!unlocked) return
     setDataLoading(true)
-    Promise.all([loadStudents(), loadAllRecords()]).then(([s, r]) => {
+    Promise.all([loadStudents(), loadAllRecords(), loadReports()]).then(([s, r, rp]) => {
       setStudents(s)
       setAllRecords(r)
+      setReports(rp)
       setDataLoading(false)
     })
   }, [unlocked])
@@ -264,7 +266,8 @@ export default function TeacherScreen({ onClose }: Props) {
               {([
                 { key: 'students', label: '학생 관리' },
                 { key: 'progress', label: '학습 현황' },
-              ] as { key: 'students' | 'progress'; label: string }[]).map(t => (
+                { key: 'reports', label: `신고 ${reports.filter(r => !r.resolved).length || ''}` },
+              ] as { key: 'students' | 'progress' | 'reports'; label: string }[]).map(t => (
                 <button
                   key={t.key}
                   onClick={() => setTab(t.key)}
@@ -343,6 +346,54 @@ export default function TeacherScreen({ onClose }: Props) {
                   )}
                 </div>
               </>
+            )}
+
+            {/* 문제 신고 탭 */}
+            {tab === 'reports' && (
+              <div className="max-h-72 overflow-y-auto flex flex-col gap-2 pr-1">
+                {reports.length === 0 ? (
+                  <div className="text-center py-10 text-gray-400">
+                    <div className="text-3xl mb-2">&#x2705;</div>
+                    <p className="text-sm">신고된 문제가 없어요.</p>
+                  </div>
+                ) : (
+                  reports.map(r => (
+                    <div
+                      key={r.id}
+                      className={`rounded-xl border-2 p-3 text-sm ${r.resolved ? 'border-gray-100 bg-gray-50 opacity-60' : 'border-orange-200 bg-orange-50'}`}
+                    >
+                      <div className="flex items-start justify-between gap-2 mb-1">
+                        <span className="font-bold text-gray-800">{r.word}</span>
+                        <span className={`text-xs px-2 py-0.5 rounded-full font-bold shrink-0 ${r.resolved ? 'bg-gray-200 text-gray-500' : 'bg-orange-200 text-orange-700'}`}>
+                          {r.resolved ? '처리됨' : '미처리'}
+                        </span>
+                      </div>
+                      <p className="text-gray-600 text-xs mb-1 leading-relaxed">{r.sentence}</p>
+                      {r.reason && (
+                        <p className="text-orange-700 text-xs mb-1">사유: {r.reason}</p>
+                      )}
+                      <div className="flex items-center justify-between mt-2">
+                        <span className="text-gray-400 text-xs">
+                          {DIFFICULTY_LABEL[r.difficulty as keyof typeof DIFFICULTY_LABEL]} · {r.reporterName} · {new Date(r.createdAt).toLocaleDateString('ko-KR')}
+                        </span>
+                        <button
+                          onClick={async () => {
+                            await resolveReport(r.id, !r.resolved)
+                            setReports(prev => prev.map(p => p.id === r.id ? { ...p, resolved: !r.resolved } : p))
+                          }}
+                          className={`text-xs font-bold px-2 py-1 rounded-lg transition-all ${
+                            r.resolved
+                              ? 'text-orange-500 hover:text-orange-700'
+                              : 'text-green-600 hover:text-green-800'
+                          }`}
+                        >
+                          {r.resolved ? '미처리로' : '처리 완료'}
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
             )}
 
             {/* 학습 현황 탭 */}

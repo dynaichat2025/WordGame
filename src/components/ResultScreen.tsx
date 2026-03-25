@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { Difficulty, PlayerRecord } from '../types'
 import type { AnswerRecord } from '../App'
-import { saveGameRecord, loadLeaderboard } from '../data/students'
+import { saveGameRecord, loadLeaderboard, reportQuestion } from '../data/students'
 
 interface Props {
   nickname: string
@@ -36,7 +36,7 @@ const GRADE_INFO = {
 
 type Tab = 'result' | 'wrong' | 'correct'
 
-function NoteCard({ item }: { item: AnswerRecord }) {
+function NoteCard({ item, onReport, reported }: { item: AnswerRecord; onReport: (item: AnswerRecord) => void; reported: boolean }) {
   const { question, selected, isCorrect } = item
   const selectedLabel =
     selected === 'timeout'
@@ -73,6 +73,20 @@ function NoteCard({ item }: { item: AnswerRecord }) {
           </div>
         )}
       </div>
+
+      {/* 신고 버튼 */}
+      <div className="mt-2 flex justify-end">
+        {reported ? (
+          <span className="text-xs text-orange-400 font-medium">신고 완료</span>
+        ) : (
+          <button
+            onClick={() => onReport(item)}
+            className="text-xs text-gray-400 hover:text-orange-500 transition-colors"
+          >
+            문제 신고
+          </button>
+        )}
+      </div>
     </div>
   )
 }
@@ -82,6 +96,10 @@ export default function ResultScreen({ nickname, studentId, score, correct, tota
   const [myRank, setMyRank] = useState(-1)
   const [displayScore, setDisplayScore] = useState(0)
   const [tab, setTab] = useState<Tab>('result')
+  const [reportTarget, setReportTarget] = useState<AnswerRecord | null>(null)
+  const [reportReason, setReportReason] = useState('')
+  const [reportedIds, setReportedIds] = useState<Set<number>>(new Set())
+  const [reportSending, setReportSending] = useState(false)
 
   const accuracy = Math.round((correct / total) * 100)
   const grade = accuracy >= 90 ? 'S' : accuracy >= 70 ? 'A' : accuracy >= 50 ? 'B' : 'C'
@@ -102,6 +120,28 @@ export default function ResultScreen({ nickname, studentId, score, correct, tota
     }, 30)
     return () => clearInterval(timer)
   }, [score])
+
+  const handleReport = (item: AnswerRecord) => {
+    setReportTarget(item)
+    setReportReason('')
+  }
+
+  const submitReport = async () => {
+    if (!reportTarget) return
+    setReportSending(true)
+    await reportQuestion(
+      reportTarget.question.id,
+      difficulty,
+      reportTarget.question.word,
+      reportTarget.question.sentence,
+      nickname,
+      reportReason,
+    )
+    setReportedIds(prev => new Set(prev).add(reportTarget.question.id))
+    setReportTarget(null)
+    setReportReason('')
+    setReportSending(false)
+  }
 
   // StrictMode 이중 실행 방지
   const savedRef = useRef(false)
@@ -212,7 +252,7 @@ export default function ResultScreen({ nickname, studentId, score, correct, tota
               </div>
             ) : (
               wrongAnswers.map((item, i) => (
-                <NoteCard key={i} item={item} />
+                <NoteCard key={i} item={item} onReport={handleReport} reported={reportedIds.has(item.question.id)} />
               ))
             )}
           </div>
@@ -228,7 +268,7 @@ export default function ResultScreen({ nickname, studentId, score, correct, tota
               </div>
             ) : (
               correctAnswers.map((item, i) => (
-                <NoteCard key={i} item={item} />
+                <NoteCard key={i} item={item} onReport={handleReport} reported={reportedIds.has(item.question.id)} />
               ))
             )}
           </div>
@@ -244,6 +284,42 @@ export default function ResultScreen({ nickname, studentId, score, correct, tota
           </button>
         </div>
       </div>
+
+      {/* 문제 신고 모달 */}
+      {reportTarget && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl p-5 w-full max-w-sm">
+            <h3 className="font-bold text-gray-800 mb-3">문제 신고</h3>
+            <div className="bg-gray-50 rounded-xl p-3 mb-3 text-sm">
+              <p className="text-gray-500 text-xs mb-1">단어</p>
+              <p className="font-bold text-gray-800">{reportTarget.question.word}</p>
+              <p className="text-gray-500 text-xs mt-2 mb-1">문장</p>
+              <p className="text-gray-700">{reportTarget.question.sentence}</p>
+            </div>
+            <textarea
+              value={reportReason}
+              onChange={e => setReportReason(e.target.value)}
+              placeholder="어떤 점이 이상한가요? (선택)"
+              className="w-full border-2 border-gray-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-orange-400 resize-none h-20 mb-3"
+            />
+            <div className="flex gap-2">
+              <button
+                onClick={() => setReportTarget(null)}
+                className="flex-1 border-2 border-gray-200 text-gray-500 font-bold py-2.5 rounded-xl hover:bg-gray-50 active:scale-95 transition-all text-sm"
+              >
+                취소
+              </button>
+              <button
+                onClick={submitReport}
+                disabled={reportSending}
+                className="flex-1 bg-orange-500 text-white font-bold py-2.5 rounded-xl hover:bg-orange-600 active:scale-95 transition-all text-sm disabled:opacity-50"
+              >
+                {reportSending ? '전송 중...' : '신고하기'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

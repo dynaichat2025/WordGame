@@ -1,5 +1,5 @@
 import { supabase } from '../lib/supabase'
-import type { Student, PlayerRecord, Difficulty } from '../types'
+import type { Student, PlayerRecord, Difficulty, QuestionReport } from '../types'
 import type { AnswerRecord } from '../App'
 import { getPoolForDifficulty, shuffle } from './questions'
 
@@ -152,6 +152,47 @@ export async function getQuestionsForStudent(difficulty: Difficulty, studentId: 
   // 미마스터 < count → 미마스터 전부 + 마스터로 채움
   const mastered = pool.filter(q => masteredIds.has(q.id))
   return shuffle([...unmastered, ...shuffle(mastered).slice(0, count - unmastered.length)])
+}
+
+// --- 문제 신고 ---
+export async function reportQuestion(
+  questionId: number,
+  difficulty: Difficulty,
+  word: string,
+  sentence: string,
+  reporterName: string,
+  reason: string,
+): Promise<void> {
+  await supabase.from('question_reports').insert({
+    question_id: questionId,
+    difficulty,
+    word,
+    sentence,
+    reporter_name: reporterName,
+    reason,
+  })
+}
+
+export async function loadReports(): Promise<QuestionReport[]> {
+  const { data } = await supabase
+    .from('question_reports')
+    .select('*')
+    .order('created_at', { ascending: false })
+  return (data ?? []).map(r => ({
+    id: r.id,
+    questionId: r.question_id,
+    difficulty: r.difficulty,
+    word: r.word,
+    sentence: r.sentence,
+    reporterName: r.reporter_name,
+    reason: r.reason,
+    resolved: r.resolved,
+    createdAt: r.created_at,
+  }))
+}
+
+export async function resolveReport(id: number, resolved: boolean): Promise<void> {
+  await supabase.from('question_reports').update({ resolved }).eq('id', id)
 }
 
 export function calcStats(records: PlayerRecord[]) {

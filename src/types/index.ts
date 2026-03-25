@@ -27,4 +27,16 @@ export interface PlayerRecord {
   _id?: number  // 고유 식별자 (timestamp), 중복 순위 탐색 방지용
 }
 
+export interface QuestionReport {
+  id: number
+  questionId: number
+  difficulty: Difficulty
+  word: string
+  sentence: string
+  reporterName: string
+  reason: string
+  resolved: boolean
+  createdAt: string
+}
+
 export type Screen = 'start' | 'quiz' | 'result' | 'teacher'
