@@ -49,8 +49,19 @@ export async function getPoolForDifficulty(difficulty: Difficulty): Promise<Ques
   return pools.flat()
 }
 
+// 선택지 순서를 셔플하고 정답 인덱스를 업데이트
+function shuffleOptions(q: Question): Question {
+  const indexed = q.options.map((opt, i) => ({ opt, isAnswer: i === q.answer }))
+  const shuffled = shuffle(indexed)
+  return {
+    ...q,
+    options: shuffled.map(x => x.opt) as Question['options'],
+    answer: shuffled.findIndex(x => x.isAnswer) as Question['answer'],
+  }
+}
+
 export async function getQuestions(difficulty: Difficulty, count = 10): Promise<Question[]> {
   const pool = await getPoolForDifficulty(difficulty)
   const shuffled = shuffle(pool)
-  return shuffled.slice(0, Math.min(count, shuffled.length))
+  return shuffled.slice(0, Math.min(count, shuffled.length)).map(shuffleOptions)
 }
