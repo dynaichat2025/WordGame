@@ -64,6 +64,20 @@ const difficulties: { value: Difficulty; label: string; desc: string; selected: 
     selected: 'bg-pink-100 border-pink-500 text-pink-800',
     idle: 'bg-white border-gray-200 text-gray-500',
   },
+  {
+    value: 'uselem',
+    label: 'Elementary',
+    desc: '초등학교',
+    selected: 'bg-teal-100 border-teal-500 text-teal-800',
+    idle: 'bg-white border-gray-200 text-gray-500',
+  },
+  {
+    value: 'usmiddle',
+    label: 'Middle',
+    desc: '중학교',
+    selected: 'bg-emerald-100 border-emerald-500 text-emerald-800',
+    idle: 'bg-white border-gray-200 text-gray-500',
+  },
 ]
 
 export default function StartScreen({ onStart, onTeacher }: Props) {

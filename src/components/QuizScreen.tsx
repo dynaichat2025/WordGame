@@ -17,6 +17,8 @@ const TIME_LIMIT: Record<Difficulty, number> = {
   proverb: 60,
   engproverb: 60,
   kpdh: 60,
+  uselem: 60,
+  usmiddle: 60,
 }
 
 const LABELS = ['①', '②', '③', '④']
