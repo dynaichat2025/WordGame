@@ -129,18 +129,21 @@ export default function ResultScreen({ nickname, studentId, score, correct, tota
   const submitReport = async () => {
     if (!reportTarget) return
     setReportSending(true)
-    await reportQuestion(
-      reportTarget.question.id,
-      difficulty,
-      reportTarget.question.word,
-      reportTarget.question.sentence,
-      nickname,
-      reportReason,
-    )
-    setReportedIds(prev => new Set(prev).add(reportTarget.question.id))
-    setReportTarget(null)
-    setReportReason('')
-    setReportSending(false)
+    try {
+      await reportQuestion({
+        questionId: reportTarget.question.id,
+        difficulty,
+        word: reportTarget.question.word,
+        sentence: reportTarget.question.sentence,
+        reporterName: nickname,
+        reason: reportReason,
+      })
+      setReportedIds(prev => new Set(prev).add(reportTarget.question.id))
+      setReportTarget(null)
+      setReportReason('')
+    } finally {
+      setReportSending(false)
+    }
   }
 
   // StrictMode 이중 실행 방지

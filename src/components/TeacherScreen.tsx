@@ -167,6 +167,9 @@ export default function TeacherScreen({ onClose }: Props) {
   const [detailRecord, setDetailRecord] = useState<PlayerRecord | null>(null)
   const [detailAnswers, setDetailAnswers] = useState<AnswerRecord[] | null>(null)
   const [detailLoading, setDetailLoading] = useState(false)
+  const [resolvingId, setResolvingId] = useState<number | null>(null)
+
+  const unresolvedCount = useMemo(() => reports.filter(r => !r.resolved).length, [reports])
   const [detailTab, setDetailTab] = useState<'wrong' | 'correct'>('wrong')
 
   useEffect(() => {
@@ -266,7 +269,7 @@ export default function TeacherScreen({ onClose }: Props) {
               {([
                 { key: 'students', label: '학생 관리' },
                 { key: 'progress', label: '학습 현황' },
-                { key: 'reports', label: `신고 ${reports.filter(r => !r.resolved).length || ''}` },
+                { key: 'reports', label: `신고 ${unresolvedCount || ''}` },
               ] as { key: 'students' | 'progress' | 'reports'; label: string }[]).map(t => (
                 <button
                   key={t.key}
@@ -374,14 +377,20 @@ export default function TeacherScreen({ onClose }: Props) {
                       )}
                       <div className="flex items-center justify-between mt-2">
                         <span className="text-gray-400 text-xs">
-                          {DIFFICULTY_LABEL[r.difficulty as keyof typeof DIFFICULTY_LABEL]} · {r.reporterName} · {new Date(r.createdAt).toLocaleDateString('ko-KR')}
+                          {DIFFICULTY_LABEL[r.difficulty]} · {r.reporterName} · {new Date(r.createdAt).toLocaleDateString('ko-KR')}
                         </span>
                         <button
+                          disabled={resolvingId === r.id}
                           onClick={async () => {
-                            await resolveReport(r.id, !r.resolved)
-                            setReports(prev => prev.map(p => p.id === r.id ? { ...p, resolved: !r.resolved } : p))
+                            setResolvingId(r.id)
+                            try {
+                              await resolveReport(r.id, !r.resolved)
+                              setReports(prev => prev.map(p => p.id === r.id ? { ...p, resolved: !r.resolved } : p))
+                            } finally {
+                              setResolvingId(null)
+                            }
                           }}
-                          className={`text-xs font-bold px-2 py-1 rounded-lg transition-all ${
+                          className={`text-xs font-bold px-2 py-1 rounded-lg transition-all disabled:opacity-50 ${
                             r.resolved
                               ? 'text-orange-500 hover:text-orange-700'
                               : 'text-green-600 hover:text-green-800'

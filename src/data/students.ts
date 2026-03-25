@@ -155,21 +155,21 @@ export async function getQuestionsForStudent(difficulty: Difficulty, studentId: 
 }
 
 // --- 문제 신고 ---
-export async function reportQuestion(
-  questionId: number,
-  difficulty: Difficulty,
-  word: string,
-  sentence: string,
-  reporterName: string,
-  reason: string,
-): Promise<void> {
+export async function reportQuestion(params: {
+  questionId: number
+  difficulty: Difficulty
+  word: string
+  sentence: string
+  reporterName: string
+  reason: string
+}): Promise<void> {
   await supabase.from('question_reports').insert({
-    question_id: questionId,
-    difficulty,
-    word,
-    sentence,
-    reporter_name: reporterName,
-    reason,
+    question_id: params.questionId,
+    difficulty: params.difficulty,
+    word: params.word,
+    sentence: params.sentence,
+    reporter_name: params.reporterName,
+    reason: params.reason,
   })
 }
 
