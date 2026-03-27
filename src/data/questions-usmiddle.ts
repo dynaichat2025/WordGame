@@ -16,7 +16,7 @@ export const usmiddleQuestions: Question[] = [
   { id: 2063, sentence: 'We have a pop quiz in science class today that nobody expected.', word: 'pop quiz', options: ['예고 없는 시험', '기말고사', '숙제', '발표'], answer: 0, difficulty: 'usmiddle' },
   { id: 2064, sentence: 'The guidance counselor helped me choose my classes for next year.', word: 'guidance counselor', options: ['진학 상담 교사', '체육 교사', '교장', '사서'], answer: 0, difficulty: 'usmiddle' },
   { id: 2065, sentence: 'I joined the student council to help plan school events.', word: 'student council', options: ['학생회', '동아리', '운동팀', '밴드부'], answer: 0, difficulty: 'usmiddle' },
-  { id: 2066, sentence: 'She tried out for the cheerleading squad and made the team.', word: 'tryout', options: ['선발 시험/오디션', '연습', '경기', '졸업식'], answer: 0, difficulty: 'usmiddle' },
+  { id: 2066, sentence: 'The tryout for the cheerleading squad is next Monday after school.', word: 'tryout', options: ['선발 시험/오디션', '연습', '경기', '졸업식'], answer: 0, difficulty: 'usmiddle' },
   { id: 2067, sentence: 'We have to write a five-paragraph essay for English class.', word: 'essay', options: ['에세이/논술문', '일기', '편지', '시'], answer: 0, difficulty: 'usmiddle' },
   { id: 2068, sentence: 'The teacher assigned a group project due at the end of the month.', word: 'group project', options: ['조별 과제', '개인 숙제', '시험', '발표회'], answer: 0, difficulty: 'usmiddle' },
   { id: 2069, sentence: 'I have to serve lunch duty in the cafeteria this week.', word: 'lunch duty', options: ['점심 당번/급식 감독', '청소 당번', '방송 당번', '도서 당번'], answer: 0, difficulty: 'usmiddle' },
