@@ -24,31 +24,29 @@ const TIME_LIMIT: Record<Difficulty, number> = {
 }
 
 const LABELS = ['①', '②', '③', '④']
+const WORD_BOUNDARY = /[\s,.:;!?'"()~]/
 
-// 문장에서 단어를 찾아 하이라이트 위치를 반환
-function findHighlight(sentence: string, word: string): { before: string; match: string; after: string } | null {
-  // 1. 정확한 매칭
+export function findHighlight(sentence: string, word: string): { before: string; match: string; after: string } | null {
   const exactIdx = sentence.indexOf(word)
   if (exactIdx !== -1) {
     return { before: sentence.slice(0, exactIdx), match: word, after: sentence.slice(exactIdx + word.length) }
   }
 
-  // 2. 대소문자 무시 매칭 (영어)
   const lowerIdx = sentence.toLowerCase().indexOf(word.toLowerCase())
   if (lowerIdx !== -1) {
     return { before: sentence.slice(0, lowerIdx), match: sentence.slice(lowerIdx, lowerIdx + word.length), after: sentence.slice(lowerIdx + word.length) }
   }
 
-  // 3. 한국어 어간 매칭 (~하다, ~다 활용형)
+  // 한국어 어간 매칭 (~하다, ~다 활용형)
   const stems: string[] = []
-  if (word.endsWith('하다')) stems.push(word.slice(0, -2))
-  if (word.endsWith('다')) stems.push(word.slice(0, -1))
+  if (word.endsWith('하다') && word.length > 2) stems.push(word.slice(0, -2))
+  if (word.endsWith('다') && word.length > 1) stems.push(word.slice(0, -1))
 
   for (const stem of stems) {
     const stemIdx = sentence.indexOf(stem)
     if (stemIdx !== -1) {
       let end = stemIdx + stem.length
-      while (end < sentence.length && !/[\s,.:;!?'"()~]/.test(sentence[end])) end++
+      while (end < sentence.length && !WORD_BOUNDARY.test(sentence[end])) end++
       return { before: sentence.slice(0, stemIdx), match: sentence.slice(stemIdx, end), after: sentence.slice(end) }
     }
   }
@@ -178,8 +176,8 @@ export default function QuizScreen({ questions, difficulty, nickname, onFinish }
     return () => clearTimeout(t)
   }, [timeLeft, selected, reportOpen, goNext])
 
-  // 키보드 단축키 (1~4) — handleSelect가 useCallback이므로 의존성 정확히 반영
   useEffect(() => {
+    if (reportOpen) return
     const handler = (e: KeyboardEvent) => {
       if (['1', '2', '3', '4'].includes(e.key)) {
         handleSelect(Number(e.key) - 1)
@@ -187,7 +185,7 @@ export default function QuizScreen({ questions, difficulty, nickname, onFinish }
     }
     window.addEventListener('keydown', handler)
     return () => window.removeEventListener('keydown', handler)
-  }, [handleSelect])
+  }, [handleSelect, reportOpen])
 
   // 컴포넌트 언마운트 시 pending 타이머 정리
   useEffect(() => {
