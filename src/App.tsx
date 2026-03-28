@@ -118,6 +118,7 @@ export default function App() {
       <QuizScreen
         questions={state.questions}
         difficulty={state.difficulty}
+        nickname={state.nickname}
         onFinish={handleFinish}
       />
     )
