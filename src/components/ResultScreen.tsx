@@ -28,6 +28,7 @@ const DIFFICULTY_LABEL: Record<Difficulty, string> = {
   kpdh: '데몬헌터',
   uselem: 'Elementary',
   usmiddle: 'Middle',
+  probability: '확률',
 }
 
 const GRADE_INFO = {
