@@ -10,19 +10,7 @@ interface Props {
   onFinish: (score: number, correct: number, answers: AnswerRecord[]) => void
 }
 
-const TIME_LIMIT: Record<Difficulty, number> = {
-  easy: 60,
-  normal: 60,
-  hard: 60,
-  daejanggeum: 60,
-  math: 60,
-  proverb: 60,
-  engproverb: 60,
-  kpdh: 60,
-  uselem: 60,
-  usmiddle: 60,
-  probability: 60,
-}
+const TIME_LIMIT = 60
 
 const LABELS = ['①', '②', '③', '④']
 const WORD_BOUNDARY = /[\s,.:;!?'"()~]/
@@ -84,7 +72,7 @@ export default function QuizScreen({ questions, difficulty, nickname, onFinish }
   const [score, setScore] = useState(0)
   const [correct, setCorrect] = useState(0)
   const [combo, setCombo] = useState(0)
-  const [timeLeft, setTimeLeft] = useState(TIME_LIMIT[difficulty])
+  const [timeLeft, setTimeLeft] = useState(TIME_LIMIT)
   const [animKey, setAnimKey] = useState(0)
   const [correctIdx, setCorrectIdx] = useState<number | null>(null)
   const [scorePopup, setScorePopup] = useState<number | null>(null)
@@ -95,7 +83,7 @@ export default function QuizScreen({ questions, difficulty, nickname, onFinish }
 
   const current = questions[index]
   const total = questions.length
-  const timeLimit = TIME_LIMIT[difficulty]
+  const timeLimit = TIME_LIMIT
 
   // 최신 score/correct를 goNext에서 읽기 위한 ref (stale closure 방지)
   const scoreRef = useRef(score)
