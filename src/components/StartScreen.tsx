@@ -78,6 +78,13 @@ const difficulties: { value: Difficulty; label: string; desc: string; selected: 
     selected: 'bg-emerald-100 border-emerald-500 text-emerald-800',
     idle: 'bg-white border-gray-200 text-gray-500',
   },
+  {
+    value: 'probability',
+    label: '확률',
+    desc: 'Probability',
+    selected: 'bg-amber-100 border-amber-500 text-amber-800',
+    idle: 'bg-white border-gray-200 text-gray-500',
+  },
 ]
 
 export default function StartScreen({ onStart, onTeacher }: Props) {

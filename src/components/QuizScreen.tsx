@@ -21,6 +21,7 @@ const TIME_LIMIT: Record<Difficulty, number> = {
   kpdh: 60,
   uselem: 60,
   usmiddle: 60,
+  probability: 60,
 }
 
 const LABELS = ['①', '②', '③', '④']
@@ -259,7 +260,7 @@ export default function QuizScreen({ questions, difficulty, nickname, onFinish }
           </div>
 
           <p className="text-center text-gray-500 font-medium mb-4 text-base">
-            {difficulty === 'math' ? (
+            {difficulty === 'math' || difficulty === 'probability' ? (
               <>정답을 고르세요!</>
             ) : difficulty === 'proverb' || difficulty === 'engproverb' ? (
               <>위 속담의 뜻은 무엇인가요?</>

@@ -11,6 +11,7 @@ const DIFFICULTY_MAP: Record<Difficulty, Difficulty[]> = {
   kpdh: ['kpdh'],
   uselem: ['uselem'],
   usmiddle: ['usmiddle'],
+  probability: ['probability'],
 }
 
 // Fisher-Yates 셔플 (균일한 무작위성 보장)
@@ -35,6 +36,7 @@ const loaders: Record<Difficulty, () => Promise<Question[]>> = {
   kpdh: () => import('./questions-kpdh').then(m => m.kpdhQuestions),
   uselem: () => import('./questions-uselem').then(m => m.uselemQuestions),
   usmiddle: () => import('./questions-usmiddle').then(m => m.usmiddleQuestions),
+  probability: () => import('./questions-probability').then(m => m.probabilityQuestions),
 }
 
 // 캐시: 한 번 로드된 난이도는 재사용
