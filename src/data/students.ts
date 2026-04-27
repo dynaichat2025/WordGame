@@ -4,7 +4,8 @@ import type { AnswerRecord } from '../App'
 import { getPoolForDifficulty, shuffle } from './questions'
 
 export async function loadStudents(): Promise<Student[]> {
-  const { data } = await supabase.from('students').select('id,name,class,pin').order('name')
+  const { data, error } = await supabase.from('students').select('id,name,class,pin').order('name')
+  if (error) throw error
   return (data ?? []).map(r => ({ id: r.id, name: r.name, class: r.class, pin: r.pin }))
 }
 

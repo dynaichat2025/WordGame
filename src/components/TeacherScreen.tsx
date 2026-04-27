@@ -175,12 +175,14 @@ export default function TeacherScreen({ onClose }: Props) {
   useEffect(() => {
     if (!unlocked) return
     setDataLoading(true)
-    Promise.all([loadStudents(), loadAllRecords(), loadReports()]).then(([s, r, rp]) => {
-      setStudents(s)
-      setAllRecords(r)
-      setReports(rp)
-      setDataLoading(false)
-    })
+    Promise.all([loadStudents(), loadAllRecords(), loadReports()])
+      .then(([s, r, rp]) => {
+        setStudents(s)
+        setAllRecords(r)
+        setReports(rp)
+      })
+      .catch(e => console.error('Teacher data load failed', e))
+      .finally(() => setDataLoading(false))
   }, [unlocked])
 
   const handlePinSubmit = () => {

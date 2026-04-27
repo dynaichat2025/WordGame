@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import type { Difficulty, Student } from '../types'
 import { loadStudents } from '../data/students'
 
@@ -89,15 +89,24 @@ const difficulties: { value: Difficulty; label: string; desc: string; selected: 
 
 export default function StartScreen({ onStart, onTeacher }: Props) {
   const [students, setStudents] = useState<Student[]>([])
+  const [loadState, setLoadState] = useState<'loading' | 'ok' | 'error'>('loading')
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null)
   const [pinInput, setPinInput] = useState('')
   const [pinError, setPinError] = useState(false)
   const [pinVerified, setPinVerified] = useState(false)
   const [difficulty, setDifficulty] = useState<Difficulty>('normal')
 
-  useEffect(() => {
-    loadStudents().then(setStudents)
+  const fetchStudents = useCallback(() => {
+    setLoadState('loading')
+    const timeout = new Promise<never>((_, reject) =>
+      setTimeout(() => reject(new Error('timeout')), 6000)
+    )
+    Promise.race([loadStudents(), timeout])
+      .then(s => { setStudents(s); setLoadState('ok') })
+      .catch(e => { console.error('loadStudents failed', e); setLoadState('error') })
   }, [])
+
+  useEffect(() => { fetchStudents() }, [fetchStudents])
 
   const handleSelectStudent = (s: Student) => {
     if (selectedStudent?.id === s.id) {
@@ -144,8 +153,20 @@ export default function StartScreen({ onStart, onTeacher }: Props) {
         {/* 학생 선택 */}
         <div className="mb-5">
           <label className="block text-base font-semibold text-gray-600 mb-2">학생 선택</label>
-          {students.length === 0 ? (
+          {loadState === 'loading' ? (
             <p className="text-sm text-gray-400 text-center py-4">학생 목록을 불러오는 중...</p>
+          ) : loadState === 'error' ? (
+            <div className="text-center py-3">
+              <p className="text-sm text-red-500 mb-2">서버 연결 실패 (무료 DB가 일시정지됐을 수 있어요)</p>
+              <button
+                onClick={fetchStudents}
+                className="bg-blue-600 text-white px-4 py-1.5 rounded-xl text-sm font-bold hover:bg-blue-700 active:scale-95 transition-all"
+              >
+                다시 시도
+              </button>
+            </div>
+          ) : students.length === 0 ? (
+            <p className="text-sm text-gray-400 text-center py-4">등록된 학생이 없어요. 선생님 대시보드에서 추가해주세요.</p>
           ) : (
             <>
             <div className="flex flex-wrap gap-2 max-h-28 overflow-y-auto px-1 py-1">
