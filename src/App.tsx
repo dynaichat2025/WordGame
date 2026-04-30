@@ -37,8 +37,8 @@ const initialState: GameState = {
 }
 
 const SuspenseFallback = (
-  <div className="min-h-screen bg-gradient-to-b from-sky-400 to-blue-600 flex items-center justify-center">
-    <div className="text-white text-xl font-bold">로딩 중...</div>
+  <div className="min-h-screen bg-uber-white flex items-center justify-center">
+    <div className="font-display text-xl font-bold text-uber-black">로딩 중</div>
   </div>
 )
 
@@ -100,8 +100,8 @@ export default function App() {
   const handleHome = useCallback(() => setState(initialState), [])
 
   if (loading) return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-400 to-blue-600 flex items-center justify-center">
-      <div className="text-white text-xl font-bold">문제 준비 중...</div>
+    <div className="min-h-screen bg-uber-white flex items-center justify-center">
+      <div className="font-display text-xl font-bold text-uber-black">문제 준비 중</div>
     </div>
   )
 

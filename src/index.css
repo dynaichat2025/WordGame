@@ -1,37 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
 @import "tailwindcss";
+@import "./styles/uber-tokens.css";
 
-* {
-  box-sizing: border-box;
+@theme {
+  --color-uber-black:        #000000;
+  --color-uber-white:        #ffffff;
+  --color-hover-gray:        #e2e2e2;
+  --color-hover-light:       #f3f3f3;
+  --color-chip-gray:         #efefef;
+  --color-body-gray:         #4b4b4b;
+  --color-muted-gray:        #afafaf;
+  --color-feedback-correct:  #1a7f37;
+  --color-feedback-wrong:    #c0392b;
+
+  --radius-pill: 999px;
+  --radius-card: 8px;
+  --radius-feat: 12px;
+
+  --shadow-card:     rgba(0, 0, 0, 0.12) 0 4px 16px;
+  --shadow-elevated: rgba(0, 0, 0, 0.16) 0 4px 16px;
+
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Apple SD Gothic Neo", "Noto Sans KR", system-ui, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-text:    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Apple SD Gothic Neo", "Noto Sans KR", system-ui, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
 }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  font-family: 'Noto Sans KR', system-ui, sans-serif;
+:root {
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Apple SD Gothic Neo", "Noto Sans KR", system-ui, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-text:    -apple-system, BlinkMacSystemFont, "SF Pro Text", "Apple SD Gothic Neo", "Noto Sans KR", system-ui, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
 }
 
-@keyframes slide-in {
-  from { opacity: 0; transform: translateX(40px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
+* { box-sizing: border-box; }
 
-@keyframes pulse-correct {
-  0%   { transform: scale(1); }
-  40%  { transform: scale(1.04); }
-  100% { transform: scale(1); }
-}
+@keyframes slide-up  { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes score-up  { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-16px); } }
 
-@keyframes combo-pop {
-  0%   { transform: scale(0.7); opacity: 0; }
-  60%  { transform: scale(1.2); opacity: 1; }
-  100% { transform: scale(1); }
-}
-
-@keyframes score-up {
-  0%   { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(-24px); opacity: 0; }
-}
-
-.slide-in     { animation: slide-in 0.3s ease-out; }
-.pulse-correct { animation: pulse-correct 0.4s ease-out; }
-.combo-pop    { animation: combo-pop 0.35s ease-out; }
+.slide-up  { animation: slide-up 150ms ease; }

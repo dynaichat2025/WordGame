@@ -43,7 +43,6 @@ export function findHighlight(sentence: string, word: string): { before: string;
   return null
 }
 
-// React.memo로 타이머 리렌더링 시 불필요한 재렌더 방지
 const HighlightedSentence = memo(function HighlightedSentence({
   sentence,
   word,
@@ -52,18 +51,17 @@ const HighlightedSentence = memo(function HighlightedSentence({
   word: string
 }) {
   const hl = findHighlight(sentence, word)
-  if (!hl) return <p className="text-xl leading-relaxed text-gray-800 text-center">{sentence}</p>
+  if (!hl) return <p className="font-display text-xl leading-snug text-uber-black text-center">{sentence}</p>
 
   return (
-    <p className="text-xl leading-relaxed text-gray-800 text-center">
+    <p className="font-display text-xl leading-snug text-uber-black text-center">
       {hl.before}
-      <span className="text-blue-600 font-bold underline underline-offset-4">{hl.match}</span>
+      <span className="text-uber-black font-bold underline underline-offset-4">{hl.match}</span>
       {hl.after}
     </p>
   )
 })
 
-// -1 매직 넘버 대신 명확한 유니온 타입
 type SelectedState = number | 'timeout' | null
 
 export default function QuizScreen({ questions, difficulty, nickname, onFinish }: Props) {
@@ -74,7 +72,6 @@ export default function QuizScreen({ questions, difficulty, nickname, onFinish }
   const [combo, setCombo] = useState(0)
   const [timeLeft, setTimeLeft] = useState(TIME_LIMIT)
   const [animKey, setAnimKey] = useState(0)
-  const [correctIdx, setCorrectIdx] = useState<number | null>(null)
   const [scorePopup, setScorePopup] = useState<number | null>(null)
   const answersRef = useRef<AnswerRecord[]>([])
 
@@ -100,7 +97,6 @@ export default function QuizScreen({ questions, difficulty, nickname, onFinish }
     isTransitioningRef.current = true
 
     setSelected(null)
-    setCorrectIdx(null)
     setScorePopup(null)
     setTimeLeft(timeLimit)
     setAnimKey(k => k + 1)
@@ -129,7 +125,6 @@ export default function QuizScreen({ questions, difficulty, nickname, onFinish }
       if (isCorrect) {
         const newCombo = combo + 1
         setCombo(newCombo)
-        setCorrectIdx(idx)
         const speedBonus = Math.floor(timeLeft * 0.5)
         const comboBonus = newCombo >= 3 ? (newCombo - 2) * 2 : 0
         const gained = 10 + speedBonus + comboBonus
@@ -184,43 +179,44 @@ export default function QuizScreen({ questions, difficulty, nickname, onFinish }
   }, [])
 
   const timerPct = (timeLeft / timeLimit) * 100
-  const timerColor = timerPct > 50 ? 'bg-green-400' : timerPct > 25 ? 'bg-yellow-400' : 'bg-red-500'
+  const timerColor = timerPct <= 25 ? 'bg-feedback-wrong' : 'bg-uber-black'
 
   const getOptionClass = (idx: number) => {
-    const base = 'w-full text-left border-2 rounded-2xl px-5 py-4 text-lg font-medium transition-colors '
+    const base = 'w-full text-left rounded-card border px-5 py-4 text-base font-medium transition-colors '
     if (selected === null)
-      return base + 'bg-white border-blue-100 hover:border-blue-400 hover:bg-blue-50 cursor-pointer'
+      return base + 'bg-uber-white border-uber-black hover:bg-chip-gray cursor-pointer'
     if (idx === current.answer)
-      return base + (correctIdx === idx ? 'pulse-correct ' : '') + 'bg-green-100 border-green-500 text-green-800'
-    if (idx === selected) return base + 'bg-red-100 border-red-500 text-red-800'
-    return base + 'bg-gray-50 border-gray-200 text-gray-400'
+      return base + 'bg-feedback-correct text-uber-white border-feedback-correct'
+    if (idx === selected)
+      return base + 'bg-feedback-wrong text-uber-white border-feedback-wrong'
+    return base + 'bg-uber-white border-muted-gray text-muted-gray'
   }
 
   const isCorrect = typeof selected === 'number' && selected === current.answer
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-400 to-blue-600 flex items-center justify-center p-4">
-      <div className="bg-white rounded-3xl shadow-2xl p-6 w-full max-w-lg">
+    <div className="min-h-screen bg-uber-white flex items-center justify-center p-4">
+      <div className="bg-uber-white rounded-card shadow-card p-6 w-full max-w-lg">
 
         {/* 헤더 */}
-        <div className="flex justify-between items-center mb-3">
-          <span className="text-gray-400 font-medium text-base">{index + 1} / {total}</span>
+        <div className="flex justify-between items-center mb-4">
+          <span className="caption text-body-gray font-medium">{index + 1} / {total}</span>
 
           <div className="flex items-center gap-2">
             {combo >= 3 && (
-              <span key={combo} className="combo-pop bg-orange-100 text-orange-600 font-black text-sm px-2 py-0.5 rounded-full">
-                🔥 {combo} 콤보!
+              <span key={combo} className="chip text-uber-black font-bold">
+                {combo}× 콤보
               </span>
             )}
           </div>
 
           <div className="relative">
-            <span className="text-blue-700 font-bold text-lg">🏆 {score}점</span>
+            <span className="font-display font-bold text-lg text-uber-black">{score}점</span>
             {scorePopup !== null && (
               <span
                 key={score}
-                className="absolute -top-5 right-0 text-sm font-bold text-green-500 pointer-events-none"
-                style={{ animation: 'score-up 1s ease-out forwards' }}
+                className="absolute -top-5 right-0 text-sm font-bold text-feedback-correct pointer-events-none"
+                style={{ animation: 'score-up 600ms ease-out forwards' }}
               >
                 +{scorePopup}
               </span>
@@ -229,32 +225,32 @@ export default function QuizScreen({ questions, difficulty, nickname, onFinish }
         </div>
 
         {/* 타이머 바 */}
-        <div className="h-2.5 bg-gray-100 rounded-full mb-2 overflow-hidden">
+        <div className="h-1 bg-chip-gray rounded-pill mb-2 overflow-hidden">
           <div
-            className={`h-full rounded-full transition-all duration-1000 ${timerColor}`}
+            className={`h-full rounded-pill transition-all duration-1000 ${timerColor}`}
             style={{ width: `${timerPct}%` }}
           />
         </div>
-        <div className="text-right mb-4">
-          <span className={`text-sm font-bold ${timeLeft <= 5 ? 'text-red-500' : 'text-gray-400'}`}>
+        <div className="text-right mb-6">
+          <span className={`caption font-medium ${timeLeft <= 5 ? 'text-feedback-wrong' : 'text-muted-gray'}`}>
             {timeLeft}초
           </span>
         </div>
 
         {/* 문장 + 질문 */}
-        <div key={animKey} className="slide-in">
-          <div className="bg-blue-50 rounded-2xl px-5 py-6 mb-4 min-h-[90px] flex items-center justify-center">
+        <div key={animKey} className="slide-up">
+          <div className="bg-chip-gray rounded-feat px-6 py-8 mb-6 min-h-[96px] flex items-center justify-center">
             <HighlightedSentence sentence={current.sentence} word={current.word} />
           </div>
 
-          <p className="text-center text-gray-500 font-medium mb-4 text-base">
+          <p className="text-center text-body-gray font-medium mb-4 text-base">
             {difficulty === 'math' || difficulty === 'probability' ? (
-              <>정답을 고르세요!</>
+              <>정답을 고르세요.</>
             ) : difficulty === 'proverb' || difficulty === 'engproverb' ? (
               <>위 속담의 뜻은 무엇인가요?</>
             ) : (
               <>위 문장에서{' '}
-              <span className="text-blue-600 font-bold">'{current.word}'</span>
+              <span className="text-uber-black font-bold">'{current.word}'</span>
               의 뜻은 무엇인가요?</>
             )}
           </p>
@@ -263,12 +259,12 @@ export default function QuizScreen({ questions, difficulty, nickname, onFinish }
         {/* 피드백 */}
         <div className="min-h-[28px] text-center mb-3">
           {selected !== null && (
-            <span className={`font-bold text-base ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>
+            <span className={`font-bold text-base ${isCorrect ? 'text-feedback-correct' : 'text-feedback-wrong'}`}>
               {isCorrect
-                ? `정답! 🎉${combo >= 3 ? ' (콤보 보너스!)' : ''}`
+                ? `정답${combo >= 3 ? ' · 콤보 보너스' : ''}`
                 : selected === 'timeout'
-                ? `시간 초과! ⏰  정답: ${current.options[current.answer]}`
-                : `오답! 😢  정답: ${current.options[current.answer]}`}
+                ? `시간 초과 · 정답: ${current.options[current.answer]}`
+                : `오답 · 정답: ${current.options[current.answer]}`}
             </span>
           )}
         </div>
@@ -277,21 +273,21 @@ export default function QuizScreen({ questions, difficulty, nickname, onFinish }
         <div className="flex flex-col gap-3">
           {current.options.map((opt, idx) => (
             <button key={idx} onClick={() => handleSelect(idx)} className={getOptionClass(idx)}>
-              <span className="text-blue-300 font-bold mr-2">{LABELS[idx]}</span>
-              <span className="text-[18px]">{opt}</span>
-              <span className="text-gray-300 text-sm ml-2">({idx + 1})</span>
+              <span className="font-bold mr-3 opacity-60">{LABELS[idx]}</span>
+              <span>{opt}</span>
+              <span className="caption text-current opacity-50 ml-2">({idx + 1})</span>
             </button>
           ))}
         </div>
 
         {/* 문제 신고 버튼 - 오른쪽 아래 */}
-        <div className="mt-3 flex justify-end">
+        <div className="mt-4 flex justify-end">
           {reportedIds.has(current.id) ? (
-            <span className="text-xs text-orange-400 font-medium">신고 완료</span>
+            <span className="caption text-body-gray font-medium">신고 완료</span>
           ) : (
             <button
               onClick={() => setReportOpen(true)}
-              className="text-xs text-gray-400 hover:text-orange-500 transition-colors"
+              className="caption text-muted-gray hover:text-uber-black underline underline-offset-2"
             >
               문제 신고
             </button>
