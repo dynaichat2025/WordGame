@@ -7,84 +7,18 @@ interface Props {
   onTeacher: () => void
 }
 
-const difficulties: { value: Difficulty; label: string; desc: string; selected: string; idle: string }[] = [
-  {
-    value: 'easy',
-    label: '쉬움',
-    desc: '1~2학년',
-    selected: 'bg-green-100 border-green-500 text-green-800',
-    idle: 'bg-white border-gray-200 text-gray-500',
-  },
-  {
-    value: 'normal',
-    label: '보통',
-    desc: '3~4학년',
-    selected: 'bg-yellow-100 border-yellow-500 text-yellow-800',
-    idle: 'bg-white border-gray-200 text-gray-500',
-  },
-  {
-    value: 'hard',
-    label: '어려움',
-    desc: '5학년',
-    selected: 'bg-red-100 border-red-500 text-red-800',
-    idle: 'bg-white border-gray-200 text-gray-500',
-  },
-  {
-    value: 'daejanggeum',
-    label: '대장금',
-    desc: '드라마',
-    selected: 'bg-purple-100 border-purple-500 text-purple-800',
-    idle: 'bg-white border-gray-200 text-gray-500',
-  },
-  {
-    value: 'math',
-    label: '수학',
-    desc: '초등수학',
-    selected: 'bg-cyan-100 border-cyan-500 text-cyan-800',
-    idle: 'bg-white border-gray-200 text-gray-500',
-  },
-  {
-    value: 'proverb',
-    label: '속담',
-    desc: '속담퀴즈',
-    selected: 'bg-orange-100 border-orange-500 text-orange-800',
-    idle: 'bg-white border-gray-200 text-gray-500',
-  },
-  {
-    value: 'engproverb',
-    label: 'Proverb',
-    desc: '영어속담',
-    selected: 'bg-indigo-100 border-indigo-500 text-indigo-800',
-    idle: 'bg-white border-gray-200 text-gray-500',
-  },
-  {
-    value: 'kpdh',
-    label: '데몬헌터',
-    desc: 'K-Pop',
-    selected: 'bg-pink-100 border-pink-500 text-pink-800',
-    idle: 'bg-white border-gray-200 text-gray-500',
-  },
-  {
-    value: 'uselem',
-    label: '초등영어',
-    desc: 'Elementary',
-    selected: 'bg-teal-100 border-teal-500 text-teal-800',
-    idle: 'bg-white border-gray-200 text-gray-500',
-  },
-  {
-    value: 'usmiddle',
-    label: '중등영어',
-    desc: 'Middle',
-    selected: 'bg-emerald-100 border-emerald-500 text-emerald-800',
-    idle: 'bg-white border-gray-200 text-gray-500',
-  },
-  {
-    value: 'probability',
-    label: '확률',
-    desc: 'Probability',
-    selected: 'bg-amber-100 border-amber-500 text-amber-800',
-    idle: 'bg-white border-gray-200 text-gray-500',
-  },
+const difficulties: { value: Difficulty; label: string; desc: string }[] = [
+  { value: 'easy',        label: '쉬움',     desc: '1~2학년' },
+  { value: 'normal',      label: '보통',     desc: '3~4학년' },
+  { value: 'hard',        label: '어려움',   desc: '5학년' },
+  { value: 'daejanggeum', label: '대장금',   desc: '드라마' },
+  { value: 'math',        label: '수학',     desc: '초등수학' },
+  { value: 'proverb',     label: '속담',     desc: '속담퀴즈' },
+  { value: 'engproverb',  label: 'Proverb',  desc: '영어속담' },
+  { value: 'kpdh',        label: '데몬헌터', desc: 'K-Pop' },
+  { value: 'uselem',      label: '초등영어', desc: 'Elementary' },
+  { value: 'usmiddle',    label: '중등영어', desc: 'Middle' },
+  { value: 'probability', label: '확률',     desc: 'Probability' },
 ]
 
 export default function StartScreen({ onStart, onTeacher }: Props) {
@@ -110,7 +44,6 @@ export default function StartScreen({ onStart, onTeacher }: Props) {
 
   const handleSelectStudent = (s: Student) => {
     if (selectedStudent?.id === s.id) {
-      // 선택 해제
       setSelectedStudent(null)
       setPinInput('')
       setPinError(false)
@@ -142,50 +75,45 @@ export default function StartScreen({ onStart, onTeacher }: Props) {
   const canStart = pinVerified
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-400 to-blue-600 flex items-center justify-center p-4">
-      <div className="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-sm">
+    <div className="min-h-screen bg-uber-white flex items-center justify-center p-4">
+      <div className="bg-uber-white rounded-card shadow-card p-8 w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="text-6xl mb-3">📖</div>
-          <h1 className="text-3xl font-bold text-blue-700">한글 단어 퀴즈</h1>
-          <p className="text-gray-400 mt-1 text-sm">문장 속 단어의 뜻을 맞혀보세요!</p>
+          <h1 className="font-display text-3xl font-bold text-uber-black">한글 단어 퀴즈</h1>
+          <p className="mt-2 text-sm text-body-gray">문장 속 단어의 뜻을 고르세요.</p>
         </div>
 
         {/* 학생 선택 */}
-        <div className="mb-5">
-          <label className="block text-base font-semibold text-gray-600 mb-2">학생 선택</label>
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-body-gray mb-3">학생 선택</label>
           {loadState === 'loading' ? (
-            <p className="text-sm text-gray-400 text-center py-4">학생 목록을 불러오는 중...</p>
+            <p className="text-sm text-muted-gray text-center py-4">학생 목록을 불러오는 중</p>
           ) : loadState === 'error' ? (
             <div className="text-center py-3">
-              <p className="text-sm text-red-500 mb-2">서버 연결 실패 (무료 DB가 일시정지됐을 수 있어요)</p>
-              <button
-                onClick={fetchStudents}
-                className="bg-blue-600 text-white px-4 py-1.5 rounded-xl text-sm font-bold hover:bg-blue-700 active:scale-95 transition-all"
-              >
+              <p className="text-sm text-body-gray mb-3">서버에 연결할 수 없어요.</p>
+              <button onClick={fetchStudents} className="btn btn-secondary text-sm">
                 다시 시도
               </button>
             </div>
           ) : students.length === 0 ? (
-            <p className="text-sm text-gray-400 text-center py-4">등록된 학생이 없어요. 선생님 대시보드에서 추가해주세요.</p>
+            <p className="text-sm text-muted-gray text-center py-4">등록된 학생이 없어요. 선생님 대시보드에서 추가해주세요.</p>
           ) : (
             <>
             <div className="flex flex-wrap gap-2 max-h-28 overflow-y-auto px-1 py-1">
-              {students.map(s => (
-                <button
-                  key={s.id}
-                  onClick={() => handleSelectStudent(s)}
-                  className={`px-3 py-1.5 rounded-xl border-2 text-sm font-medium transition-all whitespace-nowrap ${
-                    selectedStudent?.id === s.id
-                      ? pinVerified
-                        ? 'bg-blue-100 border-blue-500 text-blue-800 scale-105 shadow-sm'
-                        : 'bg-yellow-50 border-yellow-400 text-yellow-800 scale-105 shadow-sm'
-                      : 'bg-white border-gray-200 text-gray-500 hover:border-blue-300'
-                  }`}
-                >
-                  {s.name}{s.class ? ` (${s.class}반)` : ''}
-                  {selectedStudent?.id === s.id && pinVerified && ' ✓'}
-                </button>
-              ))}
+              {students.map(s => {
+                const isSelected = selectedStudent?.id === s.id
+                const isVerified = isSelected && pinVerified
+                return (
+                  <button
+                    key={s.id}
+                    onClick={() => handleSelectStudent(s)}
+                    aria-pressed={isSelected}
+                    className={`btn-chip text-sm whitespace-nowrap ${isVerified ? 'is-active' : ''}`}
+                  >
+                    {s.name}{s.class ? ` (${s.class}반)` : ''}
+                    {isVerified && <span aria-hidden="true" className="ml-1">✓</span>}
+                  </button>
+                )
+              })}
             </div>
 
             {/* PIN 입력 (학생 선택 후, 아직 미인증) */}
@@ -197,36 +125,30 @@ export default function StartScreen({ onStart, onTeacher }: Props) {
                   onChange={e => { setPinInput(e.target.value); setPinError(false) }}
                   onKeyDown={e => e.key === 'Enter' && handlePinVerify()}
                   placeholder={`${selectedStudent.name}의 PIN`}
-                  className={`flex-1 border-2 rounded-xl px-3 py-2 text-sm focus:outline-none transition-colors ${
-                    pinError ? 'border-red-400 bg-red-50' : 'border-yellow-300 focus:border-blue-500'
-                  }`}
+                  className={`input flex-1 text-sm py-3 ${pinError ? 'border-feedback-wrong' : ''}`}
                 />
-                <button
-                  onClick={handlePinVerify}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-bold hover:bg-blue-700 active:scale-95 transition-all"
-                >
+                <button onClick={handlePinVerify} className="btn btn-primary text-sm">
                   확인
                 </button>
               </div>
             )}
-            {pinError && <p className="text-red-500 text-xs mt-1 ml-1">PIN이 틀렸어요. 다시 입력해주세요.</p>}
+            {pinError && <p className="text-xs text-feedback-wrong mt-2 ml-1">PIN이 틀렸어요.</p>}
             </>
           )}
         </div>
 
         <div className="mb-8">
-          <label className="block text-base font-semibold text-gray-600 mb-2">퀴즈 종류</label>
+          <label className="block text-sm font-medium text-body-gray mb-3">퀴즈 종류</label>
           <div className="grid grid-cols-4 gap-2">
             {difficulties.map(d => (
               <button
                 key={d.value}
                 onClick={() => setDifficulty(d.value)}
-                className={`border-2 rounded-xl py-3 transition-all font-medium ${
-                  difficulty === d.value ? d.selected + ' scale-105 shadow-sm' : d.idle
-                }`}
+                aria-pressed={difficulty === d.value}
+                className={`btn-chip flex flex-col gap-1 px-1 py-3 ${difficulty === d.value ? 'is-active' : ''}`}
               >
-                <div className="text-sm font-bold">{d.label}</div>
-                <div className="text-xs mt-0.5 opacity-70">{d.desc}</div>
+                <span className="font-display font-bold text-sm whitespace-nowrap">{d.label}</span>
+                <span className="text-[10px] opacity-70 whitespace-nowrap">{d.desc}</span>
               </button>
             ))}
           </div>
@@ -235,19 +157,19 @@ export default function StartScreen({ onStart, onTeacher }: Props) {
         <button
           onClick={handleStart}
           disabled={!canStart}
-          className="w-full bg-blue-600 hover:bg-blue-700 active:scale-95 text-white text-xl font-bold py-4 rounded-2xl transition-all shadow-lg disabled:opacity-40 disabled:cursor-not-allowed"
+          className="btn btn-primary w-full py-4 text-base disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          {!selectedStudent ? '학생을 선택하세요' : !canStart ? 'PIN을 먼저 입력하세요' : '시작하기 🚀'}
+          {!selectedStudent ? '학생을 선택하세요' : !canStart ? 'PIN을 먼저 입력하세요' : '시작하기'}
         </button>
 
         <button
           onClick={onTeacher}
-          className="w-full mt-3 text-gray-400 hover:text-gray-600 text-sm py-1 transition-colors"
+          className="block w-full mt-4 text-sm text-body-gray hover:text-uber-black underline underline-offset-4"
         >
           선생님 대시보드
         </button>
 
-        <p className="text-center text-gray-300 text-xs mt-4">v{APP_VERSION}</p>
+        <p className="micro text-muted-gray text-center mt-4">v{APP_VERSION}</p>
       </div>
     </div>
   )

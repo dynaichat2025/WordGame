@@ -1,0 +1,198 @@
+/* =========================================================================
+   Uber Design System — Colors & Type Tokens
+   ========================================================================= */
+
+/* Fonts are imported from src/index.css (with Korean Noto Sans KR fallback). */
+
+:root {
+  /* ---------- Brand ---------- */
+  --uber-black:    #000000;
+  --uber-white:    #ffffff;
+
+  /* ---------- Interactive ---------- */
+  --hover-gray:    #e2e2e2;   /* white-button hover */
+  --hover-light:   #f3f3f3;   /* elevated white-button hover */
+  --chip-gray:     #efefef;   /* chip / filter background */
+
+  /* ---------- Text ---------- */
+  --body-gray:     #4b4b4b;   /* secondary text, footer links */
+  --muted-gray:    #afafaf;   /* tertiary / placeholder */
+
+  /* ---------- Semantic surfaces ---------- */
+  --bg:            var(--uber-white);
+  --bg-inverse:    var(--uber-black);
+  --surface:       var(--uber-white);
+  --surface-chip:  var(--chip-gray);
+
+  /* ---------- Semantic text ---------- */
+  --fg:            var(--uber-black);
+  --fg-2:          var(--body-gray);
+  --fg-3:          var(--muted-gray);
+  --fg-inverse:    var(--uber-white);
+
+  /* ---------- Borders ---------- */
+  --border:        var(--uber-black);
+  --border-thin:   1px solid var(--uber-black);
+
+  /* ---------- Links ---------- */
+  --link:          #0000ee;
+  --link-on-dark:  var(--uber-white);
+  --link-on-light: var(--uber-black);
+
+  /* ---------- Shadows / elevation ---------- */
+  --shadow-1: rgba(0, 0, 0, 0.12) 0px 4px 16px 0px;        /* card */
+  --shadow-2: rgba(0, 0, 0, 0.16) 0px 4px 16px 0px;        /* elevated */
+  --shadow-3: rgba(0, 0, 0, 0.16) 0px 2px  8px 0px;        /* floating */
+  --shadow-press: rgba(0, 0, 0, 0.08) 0px 0px 0px 999px inset;
+  --focus-ring:  rgb(255, 255, 255) 0px 0px 0px 2px inset;
+
+  /* ---------- Radii ---------- */
+  --radius-sharp:  0px;
+  --radius-card:   8px;
+  --radius-feat:  12px;
+  --radius-pill: 999px;
+  --radius-circle: 50%;
+
+  /* ---------- Spacing (8px grid) ---------- */
+  --sp-1:  4px;
+  --sp-2:  6px;
+  --sp-3:  8px;
+  --sp-4: 10px;
+  --sp-5: 12px;
+  --sp-6: 14px;
+  --sp-7: 16px;
+  --sp-8: 18px;
+  --sp-9: 20px;
+  --sp-10: 24px;
+  --sp-11: 32px;
+  --sp-12: 48px;
+  --sp-13: 64px;
+  --sp-14: 96px;
+
+  /* ---------- Container ---------- */
+  --container-max: 1136px;
+
+  /* ---------- Type families ---------- */
+  --font-display: "Plus Jakarta Sans", "UberMove", "UberMoveText", system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-text:    "DM Sans", "UberMoveText", system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /* ---------- Type scale (size / line-height / weight) ---------- */
+  --t-display-size: 52px; --t-display-lh: 1.23; --t-display-weight: 700;
+  --t-h1-size:      36px; --t-h1-lh:      1.22; --t-h1-weight:      700;
+  --t-h2-size:      32px; --t-h2-lh:      1.25; --t-h2-weight:      700;
+  --t-h3-size:      24px; --t-h3-lh:      1.33; --t-h3-weight:      700;
+  --t-h4-size:      20px; --t-h4-lh:      1.40; --t-h4-weight:      700;
+  --t-nav-size:     18px; --t-nav-lh:     1.33; --t-nav-weight:     500;
+  --t-body-size:    16px; --t-body-lh:    1.50; --t-body-weight:    400;
+  --t-button-size:  16px; --t-button-lh:  1.25; --t-button-weight:  500;
+  --t-cap-size:     14px; --t-cap-lh:     1.43; --t-cap-weight:     400;
+  --t-micro-size:   12px; --t-micro-lh:   1.67; --t-micro-weight:   400;
+}
+
+/* =========================================================================
+   Base / element styles
+   ========================================================================= */
+html, body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-text);
+  font-size: var(--t-body-size);
+  line-height: var(--t-body-lh);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  color: var(--fg);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+h1 { font-size: var(--t-display-size); line-height: var(--t-display-lh); font-weight: var(--t-display-weight); }
+h2 { font-size: var(--t-h1-size);      line-height: var(--t-h1-lh);      font-weight: var(--t-h1-weight); }
+h3 { font-size: var(--t-h2-size);      line-height: var(--t-h2-lh);      font-weight: var(--t-h2-weight); }
+h4 { font-size: var(--t-h3-size);      line-height: var(--t-h3-lh);      font-weight: var(--t-h3-weight); }
+h5 { font-size: var(--t-h4-size);      line-height: var(--t-h4-lh);      font-weight: var(--t-h4-weight); }
+
+p  { margin: 0; font-size: var(--t-body-size); line-height: var(--t-body-lh); }
+
+a  { color: var(--link-on-light); text-decoration: underline; }
+a.on-dark { color: var(--link-on-dark); }
+
+small, .caption { font-size: var(--t-cap-size); line-height: var(--t-cap-lh); }
+.micro { font-size: var(--t-micro-size); line-height: var(--t-micro-lh); }
+.nav-text { font-size: var(--t-nav-size); line-height: var(--t-nav-lh); font-weight: var(--t-nav-weight); }
+
+/* =========================================================================
+   Utility classes — buttons, chips, cards, inputs
+   ========================================================================= */
+.btn {
+  font-family: var(--font-text);
+  font-size: var(--t-button-size);
+  font-weight: var(--t-button-weight);
+  line-height: var(--t-button-lh);
+  border: 0;
+  cursor: pointer;
+  border-radius: var(--radius-pill);
+  padding: 10px 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background-color .15s ease, box-shadow .15s ease;
+  outline: none;
+}
+.btn:focus-visible { box-shadow: 0 0 0 2px var(--uber-black); }
+.btn-primary:focus-visible,
+.btn-chip[aria-pressed="true"]:focus-visible,
+.btn-chip.is-active:focus-visible { box-shadow: var(--focus-ring); }
+.btn-primary   { background: var(--uber-black); color: var(--uber-white); }
+.btn-primary:hover   { background: #1f1f1f; }
+.btn-secondary { background: var(--uber-white); color: var(--uber-black); border: 1px solid var(--uber-black); }
+.btn-secondary:hover { background: var(--hover-gray); }
+.btn-chip      { background: var(--chip-gray); color: var(--uber-black); padding: 14px 16px; }
+.btn-chip:hover{ background: #e6e6e6; }
+.btn-chip[aria-pressed="true"], .btn-chip.is-active { background: var(--uber-black); color: var(--uber-white); }
+.btn-fab {
+  background: var(--uber-white); color: var(--uber-black);
+  padding: 14px; box-shadow: var(--shadow-3);
+  transform: translateY(2px);
+}
+.btn-fab:hover { background: var(--hover-light); }
+
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--chip-gray); color: var(--uber-black);
+  padding: 8px 12px; border-radius: var(--radius-pill);
+  font-size: var(--t-cap-size); font-weight: 500;
+}
+
+.card {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-1);
+  padding: 24px;
+}
+.card-feature {
+  border-radius: var(--radius-feat);
+  box-shadow: var(--shadow-1);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.input {
+  font-family: var(--font-text);
+  font-size: var(--t-body-size);
+  color: var(--uber-black);
+  background: var(--uber-white);
+  border: 1px solid var(--uber-black);
+  border-radius: var(--radius-card);
+  padding: 14px 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.input::placeholder { color: var(--muted-gray); }
+
+.divider { height: 1px; background: var(--uber-black); border: 0; margin: 0; }
